@@ -13,6 +13,16 @@ struct SettingsView: View {
     @Query private var folders: [Folder]
     @Query private var tags: [Tag]
 
+    @AppStorage(ThemePreferences.key, store: ThemePreferences.store)
+    private var themeRawValue: String = ThemePreferences.defaultTheme.rawValue
+
+    private var selectedTheme: Binding<AppTheme> {
+        Binding(
+            get: { AppTheme(rawValue: themeRawValue) ?? ThemePreferences.defaultTheme },
+            set: { themeRawValue = $0.rawValue }
+        )
+    }
+
     var body: some View {
         NavigationStack {
             List {
@@ -31,6 +41,16 @@ struct SettingsView: View {
                     } label: {
                         Label("Manage Tags", systemImage: "tag")
                     }
+                }
+
+                // Appearance Section
+                Section("Appearance") {
+                    Picker("Theme", selection: selectedTheme) {
+                        ForEach(AppTheme.allCases) { theme in
+                            Text(theme.displayName).tag(theme)
+                        }
+                    }
+                    .pickerStyle(.segmented)
                 }
 
                 // About Section

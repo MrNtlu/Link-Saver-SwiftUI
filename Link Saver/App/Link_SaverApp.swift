@@ -11,10 +11,17 @@ import SwiftData
 @main
 struct Link_SaverApp: App {
     var sharedModelContainer: ModelContainer = ModelContainerFactory.createSharedContainer()
+    @AppStorage(ThemePreferences.key, store: ThemePreferences.store)
+    private var themeRawValue: String = ThemePreferences.defaultTheme.rawValue
+
+    private var theme: AppTheme {
+        AppTheme(rawValue: themeRawValue) ?? ThemePreferences.defaultTheme
+    }
 
     var body: some Scene {
         WindowGroup {
             MainTabView()
+                .preferredColorScheme(theme.colorScheme)
         }
         .modelContainer(sharedModelContainer)
     }

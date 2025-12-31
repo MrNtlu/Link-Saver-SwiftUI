@@ -22,13 +22,21 @@ struct FolderDetailView: View {
         let links = folder.links ?? []
 
         if searchText.isEmpty {
-            return links.sorted { $0.dateAdded > $1.dateAdded }
+            return sortPinnedFirst(links)
         }
 
-        return links.filter { link in
+        let result = links.filter { link in
             link.title?.localizedCaseInsensitiveContains(searchText) == true ||
             link.url.localizedCaseInsensitiveContains(searchText)
-        }.sorted { $0.dateAdded > $1.dateAdded }
+        }
+
+        return sortPinnedFirst(result)
+    }
+
+    private func sortPinnedFirst(_ links: [Link]) -> [Link] {
+        let pinned = links.filter(\.isPinned).sorted { $0.dateAdded > $1.dateAdded }
+        let unpinned = links.filter { !$0.isPinned }.sorted { $0.dateAdded > $1.dateAdded }
+        return pinned + unpinned
     }
 
     var body: some View {
@@ -142,31 +150,35 @@ struct EditFolderView: View {
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
 
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: 16) {
-                        if filteredIcons.isEmpty {
-                            Text("No icons found")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        } else {
-                            ForEach(filteredIcons, id: \.self) { icon in
-                                Button {
-                                    selectedIcon = icon
-                                } label: {
-                                    Image(systemName: icon)
-                                        .font(.title2)
-                                        .frame(width: 44, height: 44)
-                                        .background(
-                                            selectedIcon == icon ?
-                                            Color.accentColor.opacity(0.2) :
-                                            Color.clear
-                                        )
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    ScrollView {
+                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: 16) {
+                            if filteredIcons.isEmpty {
+                                Text("No icons found")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            } else {
+                                ForEach(filteredIcons, id: \.self) { icon in
+                                    Button {
+                                        selectedIcon = icon
+                                    } label: {
+                                        Image(systemName: icon)
+                                            .font(.title2)
+                                            .frame(width: 44, height: 44)
+                                            .background(
+                                                selectedIcon == icon ?
+                                                Color.accentColor.opacity(0.2) :
+                                                Color.clear
+                                            )
+                                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    }
+                                    .buttonStyle(.plain)
                                 }
-                                .buttonStyle(.plain)
                             }
                         }
+                        .padding(.vertical, 4)
                     }
+                    .frame(maxHeight: 320)
                 }
             }
             .navigationTitle("Edit Folder")

@@ -10,6 +10,8 @@ import SwiftData
 
 struct LinkRowView: View {
     let link: Link
+    @State private var faviconImage: UIImage?
+    @State private var previewUIImage: UIImage?
 
     var body: some View {
         HStack(spacing: 12) {
@@ -23,6 +25,12 @@ struct LinkRowView: View {
                     Text(link.displayTitle)
                         .font(.headline)
                         .lineLimit(1)
+
+                    if link.isPinned {
+                        Image(systemName: "pin.fill")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                    }
 
                     if link.isFavorite {
                         Image(systemName: "star.fill")
@@ -65,8 +73,7 @@ struct LinkRowView: View {
             Spacer()
 
             // Preview Image
-            if let previewData = link.previewImage,
-               let uiImage = UIImage(data: previewData) {
+            if let uiImage = previewUIImage {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -75,13 +82,18 @@ struct LinkRowView: View {
             }
         }
         .padding(.vertical, 4)
+        .task(id: link.favicon) {
+            faviconImage = await decodeImage(from: link.favicon)
+        }
+        .task(id: link.previewImage) {
+            previewUIImage = await decodeImage(from: link.previewImage)
+        }
     }
 
     // MARK: - Favicon View
     @ViewBuilder
     private var faviconView: some View {
-        if let faviconData = link.favicon,
-           let uiImage = UIImage(data: faviconData) {
+        if let uiImage = faviconImage {
             Image(uiImage: uiImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -95,6 +107,11 @@ struct LinkRowView: View {
                     .foregroundStyle(.secondary)
             }
         }
+    }
+
+    private func decodeImage(from data: Data?) async -> UIImage? {
+        guard let data else { return nil }
+        return await Task.detached(priority: .utility) { UIImage(data: data) }.value
     }
 }
 

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct LinkDetailView: View {
     @Environment(\.modelContext) private var modelContext
@@ -14,12 +15,14 @@ struct LinkDetailView: View {
     @Environment(\.openURL) private var openURL
 
     @Bindable var link: Link
-    @Query private var folders: [Folder]
-    @Query private var allTags: [Tag]
 
     @State private var showEditSheet = false
     @State private var showDeleteAlert = false
     @State private var isRefreshingMetadata = false
+    
+    private var hasNotes: Bool {
+        !(link.notes?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true)
+    }
 
     var body: some View {
         ScrollView {
@@ -34,7 +37,9 @@ struct LinkDetailView: View {
                 detailsSection
 
                 // Notes Section
-                notesSection
+                if hasNotes {
+                    notesSection
+                }
 
                 // Tags Section
                 tagsSection
@@ -47,8 +52,10 @@ struct LinkDetailView: View {
             }
             .padding()
         }
+        .background(Color(uiColor: .systemGroupedBackground))
         .navigationTitle("Link Details")
         .navigationBarTitleDisplayMode(.inline)
+        .groupBoxStyle(DetailCardGroupBoxStyle())
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
@@ -56,6 +63,15 @@ struct LinkDetailView: View {
                         showEditSheet = true
                     } label: {
                         Label("Edit", systemImage: "pencil")
+                    }
+
+                    Button {
+                        togglePinned()
+                    } label: {
+                        Label(
+                            link.isPinned ? "Unpin" : "Pin",
+                            systemImage: link.isPinned ? "pin.slash" : "pin.fill"
+                        )
                     }
 
                     Button {
@@ -134,6 +150,11 @@ struct LinkDetailView: View {
 
                 Spacer()
 
+                if link.isPinned {
+                    Image(systemName: "pin.fill")
+                        .foregroundStyle(.orange)
+                }
+
                 if link.isFavorite {
                     Image(systemName: "star.fill")
                         .foregroundStyle(.yellow)
@@ -147,7 +168,14 @@ struct LinkDetailView: View {
             }
         }
         .padding()
-        .background(.regularMaterial)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Color(uiColor: .separator).opacity(0.25), lineWidth: 1)
+                }
+        )
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
@@ -169,6 +197,7 @@ struct LinkDetailView: View {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
+            .tint(.blue)
 
             Button {
                 copyLink()
@@ -177,74 +206,135 @@ struct LinkDetailView: View {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
+            .tint(.blue)
         }
     }
 
     // MARK: - Details Section
     private var detailsSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("URL")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+        GroupBox {
+            HStack(alignment: .firstTextBaseline, spacing: 10) {
+                DetailCardIcon(systemImage: "link")
 
-            Text(link.url)
-                .font(.subheadline)
-                .textSelection(.enabled)
+                Text("URL")
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(.primary)
+
+                Text(link.url)
+                    .font(.callout)
+                    .foregroundStyle(.blue)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                    .textSelection(.enabled)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        } label: {
+            EmptyView()
         }
     }
 
     // MARK: - Tags Section
     private var tagsSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Tags")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+        GroupBox {
+            let sortedTags = link.tags.sorted { left, right in
+                left.name.localizedCaseInsensitiveCompare(right.name) == .orderedAscending
+            }
 
-            if link.tags.isEmpty {
-                Text("No tags")
-                    .font(.subheadline)
-                    .foregroundStyle(.tertiary)
-            } else {
-                FlowLayout(spacing: 8) {
-                    ForEach(link.tags) { tag in
-                        TagChip(tag: tag, isCompact: false)
+            HStack(alignment: .firstTextBaseline, spacing: 10) {
+                DetailCardIcon(systemImage: "tag")
+
+                Text("Tags")
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(.primary)
+
+                Group {
+                    if sortedTags.isEmpty {
+                        Text("Not set")
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        ViewThatFits(in: .horizontal) {
+                            HStack(spacing: 6) {
+                                ForEach(sortedTags) { tag in
+                                    DetailTagChip(tag: tag)
+                                }
+                            }
+
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                LazyHStack(spacing: 6) {
+                                    ForEach(sortedTags) { tag in
+                                        DetailTagChip(tag: tag)
+                                    }
+                                }
+                            }
+                            .defaultScrollAnchor(.trailing)
+                        }
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .trailing)
             }
+        } label: {
+            EmptyView()
         }
     }
 
     // MARK: - Folder Section
     private var folderSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Folder")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+        GroupBox {
+            HStack(alignment: .firstTextBaseline, spacing: 10) {
+                DetailCardIcon(systemImage: "folder")
 
-            if let folder = link.folder {
-                HStack {
-                    Image(systemName: folder.iconName)
-                    Text(folder.name)
+                Text("Folder")
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(.primary)
+
+                if let folder = link.folder {
+                    NavigationLink {
+                        FolderDetailView(folder: folder)
+                    } label: {
+                        FolderChip(iconName: folder.iconName, name: folder.name)
+                            .foregroundStyle(.primary)
+                    }
+                    .buttonStyle(.plain)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                } else {
+                    Text("Not set")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                 }
-                .font(.subheadline)
-            } else {
-                Text("Not in a folder")
-                    .font(.subheadline)
-                    .foregroundStyle(.tertiary)
             }
+        } label: {
+            EmptyView()
         }
     }
 
+    
+
     // MARK: - Metadata Section
     private var metadataSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        GroupBox {
+            VStack(alignment: .leading, spacing: 10) {
+                LabeledContent("Added") {
+                    Text(link.dateAdded, style: .date)
+                }
+
+                LabeledContent("Metadata fetched") {
+                    Text(link.metadataFetched ? "Yes" : "No")
+                }
+
+                if let lastAttempt = link.lastMetadataFetchAttempt {
+                    LabeledContent("Last attempt") {
+                        Text(lastAttempt, style: .relative)
+                    }
+                }
+            }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+        } label: {
             HStack {
-                Text("Metadata")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-
+                DetailCardHeader(title: "Metadata", systemImage: "info.circle")
                 Spacer()
-
                 Button {
                     refreshMetadata()
                 } label: {
@@ -257,22 +347,7 @@ struct LinkDetailView: View {
                 }
                 .disabled(isRefreshingMetadata)
             }
-
-            VStack(alignment: .leading, spacing: 4) {
-                HStack {
-                    Text("Added:")
-                    Spacer()
-                    Text(link.dateAdded, style: .date)
-                }
-
-                HStack {
-                    Text("Metadata fetched:")
-                    Spacer()
-                    Text(link.metadataFetched ? "Yes" : "No")
-                }
-            }
-            .font(.caption)
-            .foregroundStyle(.secondary)
+            .padding(.bottom, 6)
         }
     }
 
@@ -306,6 +381,12 @@ struct LinkDetailView: View {
         }
     }
 
+    private func togglePinned() {
+        withAnimation {
+            link.isPinned.toggle()
+        }
+    }
+
     private func deleteLink() {
         modelContext.delete(link)
         dismiss()
@@ -323,23 +404,110 @@ struct LinkDetailView: View {
 
     // MARK: - Notes Section
     private var notesSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Notes")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
-            if let notes = link.notes, !notes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                Text(notes)
-                    .font(.subheadline)
-                    .textSelection(.enabled)
-            } else {
-                Text("No notes")
-                    .font(.subheadline)
-                    .foregroundStyle(.tertiary)
-            }
+        GroupBox {
+            Text(link.notes ?? "")
+                .font(.callout)
+                .textSelection(.enabled)
+        } label: {
+            DetailCardHeader(title: "Notes", systemImage: "note.text")
         }
     }
 
+}
+
+private struct DetailCardGroupBoxStyle: GroupBoxStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            configuration.label
+                .font(.callout.weight(.semibold))
+                .foregroundStyle(.primary)
+
+            configuration.content
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(uiColor: .secondarySystemGroupedBackground))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Color(uiColor: .separator).opacity(0.25), lineWidth: 1)
+                }
+        )
+    }
+}
+
+private struct DetailCardIcon: View {
+    let systemImage: String
+    var tint: Color = .primary
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(Color(uiColor: .tertiarySystemFill))
+                .frame(width: 28, height: 28)
+
+            Image(systemName: systemImage)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(tint)
+        }
+        .accessibilityHidden(true)
+    }
+}
+
+private struct DetailCardHeader: View {
+    let title: String
+    let systemImage: String
+
+    var body: some View {
+        HStack(spacing: 10) {
+            DetailCardIcon(systemImage: systemImage)
+            Text(title)
+        }
+    }
+}
+
+private struct FolderChip: View {
+    let iconName: String
+    let name: String
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: iconName)
+                .font(.system(size: 13, weight: .semibold))
+
+            Text(name)
+                .font(.callout)
+                .lineLimit(1)
+                .truncationMode(.tail)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 7)
+        .background(Color(uiColor: .tertiarySystemFill))
+        .clipShape(Capsule())
+    }
+}
+
+private struct DetailTagChip: View {
+    let tag: Tag
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(tag.color)
+                .frame(width: 8, height: 8)
+
+            Text(tag.name)
+                .font(.callout)
+                .foregroundStyle(.primary)
+                .lineLimit(1)
+                .truncationMode(.tail)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 7)
+        .background(Color(uiColor: .tertiarySystemFill))
+        .clipShape(Capsule())
+    }
 }
 
 // MARK: - Edit Link View

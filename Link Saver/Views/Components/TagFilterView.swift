@@ -17,7 +17,7 @@ struct TagFilterView: View {
                 // All filter
                 FilterChip(
                     title: "All",
-                    color: .secondary,
+                    color: selectedTag == nil ? .blue : .secondary,
                     isSelected: selectedTag == nil
                 ) {
                     withAnimation(.easeInOut(duration: 0.2)) {

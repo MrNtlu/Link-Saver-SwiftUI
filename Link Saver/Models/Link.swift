@@ -24,6 +24,7 @@ final class Link {
 
     // MARK: - Organization
     var isFavorite: Bool
+    var isPinned: Bool
     var folder: Folder?
     @Relationship(inverse: \Tag.links) var tags: [Tag]
 
@@ -46,6 +47,7 @@ final class Link {
         self.url = url
         self.dateAdded = Date()
         self.isFavorite = false
+        self.isPinned = false
         self.tags = []
         self.metadataFetched = false
     }
@@ -56,6 +58,7 @@ final class Link {
         self.title = title
         self.dateAdded = Date()
         self.isFavorite = false
+        self.isPinned = false
         self.folder = folder
         self.tags = []
         self.metadataFetched = false

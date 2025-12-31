@@ -110,7 +110,7 @@ struct ShareView: View {
                             }
                         }
                     }
-                    .disabled(isFetching)
+                    .disabled(!isValidURL || isFetching)
                 }
 
                 if isFetching {

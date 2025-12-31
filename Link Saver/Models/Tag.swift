@@ -15,12 +15,21 @@ final class Tag {
     var name: String
     var colorHex: String
     var dateCreated: Date
+    @Transient private var cachedColorHex: String?
+    @Transient private var cachedColor: Color?
 
     @Relationship(deleteRule: .nullify) var links: [Link]?
 
     // MARK: - Computed Properties
     var color: Color {
-        Color(hex: colorHex) ?? .blue
+        if cachedColorHex == colorHex, let cachedColor {
+            return cachedColor
+        }
+
+        let computed = Color(hex: colorHex) ?? .blue
+        cachedColorHex = colorHex
+        cachedColor = computed
+        return computed
     }
 
     var linkCount: Int {

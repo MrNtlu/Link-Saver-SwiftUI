@@ -84,6 +84,13 @@ if #available(iOS 26, *) {
 - Extract reusable views into Components/
 - Use SF Symbols for icons
 
+### Theming (Light/Dark)
+- **Default**: Light (overrides system appearance until user changes it)
+- **Preference storage**: `@AppStorage(ThemePreferences.key, store: ThemePreferences.store)` (App Group `UserDefaults`, falls back to standard defaults if needed)
+- **Global application**: `Link Saver/App/Link_SaverApp.swift` applies `.preferredColorScheme(...)` so changes update live without relaunch
+- **Settings UI**: `Link Saver/Views/Settings/SettingsView.swift` → `Appearance` section with a Light/Dark segmented picker
+- **Style rule**: Prefer semantic colors/materials (`.primary`, `.secondary`, system backgrounds) and avoid hard-coded `.white/.black` so both themes stay correct
+
 ### Error Handling
 - Use `Result` type or `throws` for error propagation
 - Never crash on recoverable errors

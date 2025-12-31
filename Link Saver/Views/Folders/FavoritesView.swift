@@ -19,13 +19,21 @@ struct FavoritesView: View {
     @State private var searchText = ""
 
     private var filteredLinks: [Link] {
-        guard !searchText.isEmpty else { return favoriteLinks }
-        return favoriteLinks.filter { link in
+        let base: [Link]
+        if searchText.isEmpty {
+            base = favoriteLinks
+        } else {
+            base = favoriteLinks.filter { link in
             link.title?.localizedCaseInsensitiveContains(searchText) == true ||
             link.url.localizedCaseInsensitiveContains(searchText) ||
             link.linkDescription?.localizedCaseInsensitiveContains(searchText) == true ||
             link.notes?.localizedCaseInsensitiveContains(searchText) == true
+            }
         }
+
+        let pinned = base.filter(\.isPinned)
+        let unpinned = base.filter { !$0.isPinned }
+        return pinned + unpinned
     }
 
     var body: some View {
@@ -44,14 +52,24 @@ struct FavoritesView: View {
                         NavigationLink(destination: LinkDetailView(link: link)) {
                             LinkRowView(link: link)
                         }
-                        .swipeActions(edge: .leading) {
-                            Button {
-                                toggleFavorite(link)
-                            } label: {
-                                Label("Unfavorite", systemImage: "star.slash")
-                            }
-                            .tint(.yellow)
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            togglePinned(link)
+                        } label: {
+                            Label(
+                                link.isPinned ? "Unpin" : "Pin",
+                                systemImage: link.isPinned ? "pin.slash" : "pin.fill"
+                            )
                         }
+                        .tint(.orange)
+
+                        Button {
+                            toggleFavorite(link)
+                        } label: {
+                            Label("Unfavorite", systemImage: "star.slash")
+                        }
+                        .tint(.yellow)
+                    }
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button(role: .destructive) {
                                 deleteLink(link)
@@ -74,6 +92,12 @@ struct FavoritesView: View {
         }
     }
 
+    private func togglePinned(_ link: Link) {
+        withAnimation {
+            link.isPinned.toggle()
+        }
+    }
+
     private func deleteLink(_ link: Link) {
         withAnimation {
             modelContext.delete(link)
@@ -87,4 +111,3 @@ struct FavoritesView: View {
     }
     .modelContainer(ModelContainerFactory.createPreviewContainer())
 }
-

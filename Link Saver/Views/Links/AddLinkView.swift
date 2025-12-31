@@ -28,6 +28,7 @@ struct AddLinkView: View {
     @State private var didUserEditTitle = false
     @State private var errorMessage: String?
     @State private var isSaving = false
+    @State private var showAddTag = false
 
     private var isValidURL: Bool {
         urlText.normalizedURL != nil
@@ -70,7 +71,7 @@ struct AddLinkView: View {
                                 }
                             }
                         }
-                        .disabled(isFetching)
+                        .disabled(!isValidURL || isFetching)
                     }
 
                     if isFetching {
@@ -118,9 +119,21 @@ struct AddLinkView: View {
                     }
                 }
 
-                // Tags Selection
-                if !allTags.isEmpty {
-                    Section("Tags") {
+                Section {
+                    if allTags.isEmpty {
+                        ContentUnavailableView {
+                            Label("No Tags", systemImage: "tag")
+                        } description: {
+                            Text("Create tags to organize your links.")
+                        } actions: {
+                            Button("Create Tag") {
+                                showAddTag = true
+                            }
+                            .buttonStyle(.borderedProminent)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                    } else {
                         ForEach(allTags) { tag in
                             Button {
                                 toggleTag(tag)
@@ -139,7 +152,15 @@ struct AddLinkView: View {
                                 }
                             }
                         }
+
+                        Button {
+                            showAddTag = true
+                        } label: {
+                            Label("Create Tag", systemImage: "plus")
+                        }
                     }
+                } header: {
+                    Text("Tags")
                 }
             }
             .navigationTitle("Add Link")
@@ -156,6 +177,9 @@ struct AddLinkView: View {
                     }
                 }
             }
+        }
+        .sheet(isPresented: $showAddTag) {
+            AddTagView()
         }
     }
 

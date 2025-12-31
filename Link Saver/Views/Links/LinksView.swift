@@ -37,7 +37,13 @@ struct LinksView: View {
         }
 
         // Apply sorting
-        return sortLinks(result)
+        return sortLinksPinnedFirst(result)
+    }
+
+    private func sortLinksPinnedFirst(_ links: [Link]) -> [Link] {
+        let pinned = links.filter(\.isPinned)
+        let unpinned = links.filter { !$0.isPinned }
+        return sortLinks(pinned) + sortLinks(unpinned)
     }
 
     private func sortLinks(_ links: [Link]) -> [Link] {
@@ -70,6 +76,7 @@ struct LinksView: View {
                 }
             }
             .navigationTitle("Links")
+            .navigationBarTitleDisplayMode(.large)
             .searchable(
                 text: $searchText,
                 isPresented: $isSearching,
@@ -81,12 +88,24 @@ struct LinksView: View {
                     sortMenuButton
                 }
             }
-            .safeAreaInset(edge: .top) {
-                if !isSearching && !tags.isEmpty {
-                    TagFilterView(tags: tags, selectedTag: $selectedTagFilter)
-                        .padding(.horizontal)
-                        .padding(.bottom, 8)
-                }
+        }
+    }
+
+    @ViewBuilder
+    private var filteredEmptyStateView: some View {
+        if !searchText.isEmpty {
+            ContentUnavailableView.search(text: searchText)
+        } else if let tag = selectedTagFilter {
+            ContentUnavailableView {
+                Label("No Links", systemImage: "tag")
+            } description: {
+                Text("No links match the “\(tag.name)” tag.")
+            }
+        } else {
+            ContentUnavailableView {
+                Label("No Links", systemImage: "link")
+            } description: {
+                Text("No links match the current filters.")
             }
         }
     }
@@ -103,6 +122,23 @@ struct LinksView: View {
     // MARK: - Links List
     private var linksList: some View {
         List {
+            if !isSearching && !tags.isEmpty {
+                Section {
+                    TagFilterView(tags: tags, selectedTag: $selectedTagFilter)
+                        .padding(.vertical, 6)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                }
+            }
+
+            if filteredLinks.isEmpty {
+                filteredEmptyStateView
+                    .listRowInsets(EdgeInsets())
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+            }
+
             ForEach(filteredLinks) { link in
                 NavigationLink(destination: LinkDetailView(link: link)) {
                     LinkRowView(link: link)
@@ -115,6 +151,16 @@ struct LinksView: View {
                     }
                 }
                 .swipeActions(edge: .leading) {
+                    Button {
+                        togglePinned(link)
+                    } label: {
+                        Label(
+                            link.isPinned ? "Unpin" : "Pin",
+                            systemImage: link.isPinned ? "pin.slash" : "pin.fill"
+                        )
+                    }
+                    .tint(.orange)
+
                     Button {
                         toggleFavorite(link)
                     } label: {
@@ -160,6 +206,12 @@ struct LinksView: View {
     private func toggleFavorite(_ link: Link) {
         withAnimation {
             link.isFavorite.toggle()
+        }
+    }
+
+    private func togglePinned(_ link: Link) {
+        withAnimation {
+            link.isPinned.toggle()
         }
     }
 }
