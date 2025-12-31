@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.moved-aside
+*.swp
+
+# Per-user Xcode data
+**/*.xcodeproj/xcuserdata/
+**/*.xcworkspace/xcuserdata/
+
+# Xcode's generated workspace inside a project
+**/*.xcodeproj/project.xcworkspace/
+
+# Workspace/project UI state (safe to regenerate)
+*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+# Swift Package Manager (if added later)
+.build/
+.swiftpm/
