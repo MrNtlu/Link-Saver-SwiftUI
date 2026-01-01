@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum AppConstants {
     /// App Group identifier for sharing data with Share Extension
@@ -40,13 +41,17 @@ enum AppConstants {
 
 // MARK: - Sort Options
 enum LinkSortOption: String, CaseIterable, Identifiable {
-    case dateAddedNewest = "Newest First"
-    case dateAddedOldest = "Oldest First"
-    case titleAZ = "Title A-Z"
-    case titleZA = "Title Z-A"
-    case favorites = "Favorites First"
+    case dateAddedNewest = "sort.dateAddedNewest"
+    case dateAddedOldest = "sort.dateAddedOldest"
+    case titleAZ = "sort.titleAZ"
+    case titleZA = "sort.titleZA"
+    case favorites = "sort.favoritesFirst"
 
     var id: String { rawValue }
+
+    var titleKey: LocalizedStringKey {
+        LocalizedStringKey(rawValue)
+    }
 
     var systemImage: String {
         switch self {

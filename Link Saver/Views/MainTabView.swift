@@ -14,12 +14,12 @@ enum AppTab: Int, CaseIterable {
     case settings = 2
     case add = 3
 
-    var title: String {
+    var titleKey: LocalizedStringKey {
         switch self {
-        case .links: return "Links"
-        case .folders: return "Folders"
-        case .settings: return "Settings"
-        case .add: return "Add"
+        case .links: return "tab.links"
+        case .folders: return "tab.folders"
+        case .settings: return "tab.settings"
+        case .add: return "tab.add"
         }
     }
 
@@ -50,19 +50,19 @@ struct MainTabView: View {
     @available(iOS 26, *)
     private var liquidGlassTabView: some View {
         TabView(selection: $selectedTab) {
-            Tab(AppTab.links.title, systemImage: AppTab.links.icon, value: AppTab.links) {
+            Tab(AppTab.links.titleKey, systemImage: AppTab.links.icon, value: AppTab.links) {
                 LinksView()
             }
 
-            Tab(AppTab.folders.title, systemImage: AppTab.folders.icon, value: AppTab.folders) {
+            Tab(AppTab.folders.titleKey, systemImage: AppTab.folders.icon, value: AppTab.folders) {
                 FoldersView()
             }
 
-            Tab(AppTab.settings.title, systemImage: AppTab.settings.icon, value: AppTab.settings) {
+            Tab(AppTab.settings.titleKey, systemImage: AppTab.settings.icon, value: AppTab.settings) {
                 SettingsView()
             }
             
-            Tab(AppTab.add.title, systemImage: AppTab.add.icon, value: AppTab.add, role: .search) {
+            Tab(AppTab.add.titleKey, systemImage: AppTab.add.icon, value: AppTab.add, role: .search) {
                 AddLinkView(onSaved: { selectedTab = .links })
             }
         }
@@ -73,19 +73,19 @@ struct MainTabView: View {
     private var legacyTabView: some View {
         TabView(selection: $selectedTab) {
             LinksView()
-                .tabItem { Label(AppTab.links.title, systemImage: AppTab.links.icon) }
+                .tabItem { Label(AppTab.links.titleKey, systemImage: AppTab.links.icon) }
                 .tag(AppTab.links)
 
             FoldersView()
-                .tabItem { Label(AppTab.folders.title, systemImage: AppTab.folders.icon) }
+                .tabItem { Label(AppTab.folders.titleKey, systemImage: AppTab.folders.icon) }
                 .tag(AppTab.folders)
 
             SettingsView()
-                .tabItem { Label(AppTab.settings.title, systemImage: AppTab.settings.icon) }
+                .tabItem { Label(AppTab.settings.titleKey, systemImage: AppTab.settings.icon) }
                 .tag(AppTab.settings)
 
             AddLinkView(onSaved: { selectedTab = .links })
-                .tabItem { Label(AppTab.add.title, systemImage: AppTab.add.icon) }
+                .tabItem { Label(AppTab.add.titleKey, systemImage: AppTab.add.icon) }
                 .tag(AppTab.add)
         }
     }

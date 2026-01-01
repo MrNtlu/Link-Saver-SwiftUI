@@ -13,6 +13,9 @@ struct ShareView: View {
     @Query private var folders: [Folder]
     @Query private var allTags: [Tag]
 
+    @AppStorage(LanguagePreferences.key, store: LanguagePreferences.store)
+    private var languageRawValue: String = LanguagePreferences.defaultLanguage.rawValue
+
     let url: String?
     let title: String?
     let onSave: () -> Void
@@ -25,7 +28,7 @@ struct ShareView: View {
     @State private var selectedTags: Set<UUID> = []
     @State private var isSaving = false
     @State private var showSuccess = false
-    @State private var errorMessage: String?
+    @State private var errorKey: String?
     @State private var isFetching = false
     @State private var fetchedTitle: String?
     @State private var fetchedDescription: String?
@@ -37,6 +40,10 @@ struct ShareView: View {
         urlText.normalizedURL != nil
     }
 
+    private var language: AppLanguage {
+        AppLanguage(rawValue: languageRawValue) ?? LanguagePreferences.defaultLanguage
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -46,11 +53,11 @@ struct ShareView: View {
                     contentView
                 }
             }
-            .navigationTitle("Save Link")
+            .navigationTitle("share.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("common.cancel") {
                         fetchTask?.cancel()
                         onCancel()
                     }
@@ -61,7 +68,7 @@ struct ShareView: View {
                     if isSaving {
                         ProgressView()
                     } else if !showSuccess {
-                        Button("Save") {
+                        Button("common.save") {
                             saveLink()
                         }
                         .disabled(!isValidURL || isFetching)
@@ -69,6 +76,7 @@ struct ShareView: View {
                 }
             }
         }
+        .environment(\.locale, language.locale)
         .onAppear {
             urlText = url ?? ""
             titleText = title ?? ""
@@ -84,8 +92,8 @@ struct ShareView: View {
     private var contentView: some View {
         Form {
             // URL Input / Preview
-            Section("URL") {
-                TextField("Enter URL", text: $urlText)
+            Section("common.url") {
+                TextField("addLink.url.placeholder", text: $urlText)
                     .textInputAutocapitalization(.never)
                     .keyboardType(.URL)
                     .autocorrectionDisabled()
@@ -103,7 +111,7 @@ struct ShareView: View {
                     } label: {
                         HStack(spacing: 8) {
                             Image(systemName: "sparkles")
-                            Text("Fetch Preview")
+                            Text("common.fetchPreview")
                             Spacer()
                             if isFetching {
                                 ProgressView()
@@ -120,7 +128,7 @@ struct ShareView: View {
                     HStack {
                         ProgressView()
                             .scaleEffect(0.8)
-                        Text("Fetching preview...")
+                        Text("common.fetchingPreview")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -128,42 +136,42 @@ struct ShareView: View {
 
                 previewCard
 
-                if let error = errorMessage {
-                    Text(error)
+                if let errorKey {
+                    Text(LocalizedStringKey(errorKey))
                         .font(.caption)
                         .foregroundStyle(.red)
                 }
             }
 
-            Section("Details") {
-                TextField("Title", text: $titleText) { isEditing in
+            Section("addLink.section.details") {
+                TextField("common.title", text: $titleText) { isEditing in
                     if isEditing {
                         didUserEditTitle = true
                     }
                 }
 
-                TextField("Notes (optional)", text: $notesText, axis: .vertical)
+                TextField("common.notesOptional", text: $notesText, axis: .vertical)
                     .lineLimit(3...8)
             }
 
             // Folder Selection
             if !folders.isEmpty {
                 Section {
-                    Picker("Save to folder", selection: $selectedFolder) {
-                        Text("None").tag(nil as Folder?)
+                    Picker("addLink.folder.picker", selection: $selectedFolder) {
+                        Text("common.none").tag(nil as Folder?)
                         ForEach(folders) { folder in
                             Label(folder.name, systemImage: folder.iconName)
                                 .tag(folder as Folder?)
                         }
                     }
                 } header: {
-                    Text("Folder")
+                    Text("common.folder")
                 }
             }
 
             // Tags Selection
             if !allTags.isEmpty {
-                Section("Tags") {
+                Section("common.tags") {
                     ForEach(allTags) { tag in
                         Button {
                             toggleTag(tag)
@@ -194,7 +202,7 @@ struct ShareView: View {
                 .font(.system(size: 64))
                 .foregroundStyle(.green)
 
-            Text("Link Saved!")
+            Text("share.success.title")
                 .font(.title2)
                 .fontWeight(.semibold)
 
@@ -219,7 +227,7 @@ struct ShareView: View {
     // MARK: - Save Link
     private func saveLink() {
         guard let normalizedURL = urlText.normalizedURL else {
-            errorMessage = "No valid URL to save"
+            errorKey = "error.invalidUrlToSave"
             return
         }
 
@@ -252,7 +260,7 @@ struct ShareView: View {
                 showSuccess = true
             }
         } catch {
-            errorMessage = "Failed to save link: \(error.localizedDescription)"
+            errorKey = "error.saveFailed"
         }
 
         isSaving = false
@@ -287,7 +295,7 @@ struct ShareView: View {
     }
 
     private func handleURLChange(_ newValue: String) {
-        errorMessage = nil
+        errorKey = nil
         fetchedTitle = nil
         fetchedDescription = nil
 
@@ -316,7 +324,7 @@ struct ShareView: View {
 
             await MainActor.run {
                 isFetching = true
-                errorMessage = nil
+                errorKey = nil
             }
 
             do {
@@ -336,7 +344,7 @@ struct ShareView: View {
                         isFetching = false
                         return
                     }
-                    errorMessage = "Could not fetch preview"
+                    errorKey = "error.previewFetchFailed"
                     isFetching = false
                 }
             }

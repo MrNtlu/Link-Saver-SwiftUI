@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct EmptyStateView: View {
-    let title: String
-    let message: String
+    let title: LocalizedStringKey
+    let message: LocalizedStringKey
     let systemImage: String
-    var actionTitle: String?
+    var actionTitle: LocalizedStringKey?
     var action: (() -> Void)?
 
     var body: some View {

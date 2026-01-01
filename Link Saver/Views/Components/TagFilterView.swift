@@ -16,7 +16,7 @@ struct TagFilterView: View {
             HStack(spacing: 8) {
                 // All filter
                 FilterChip(
-                    title: "All",
+                    title: Text("tagFilter.all"),
                     color: selectedTag == nil ? .blue : .secondary,
                     isSelected: selectedTag == nil
                 ) {
@@ -28,7 +28,7 @@ struct TagFilterView: View {
                 // Tag filters
                 ForEach(tags) { tag in
                     FilterChip(
-                        title: tag.name,
+                        title: Text(verbatim: tag.name),
                         color: tag.color,
                         isSelected: selectedTag?.id == tag.id
                     ) {
@@ -48,7 +48,7 @@ struct TagFilterView: View {
 
 // MARK: - Filter Chip
 struct FilterChip: View {
-    let title: String
+    let title: Text
     let color: Color
     let isSelected: Bool
     let action: () -> Void
@@ -62,7 +62,7 @@ struct FilterChip: View {
                         .frame(width: 8, height: 8)
                 }
 
-                Text(title)
+                title
                     .font(.subheadline)
                     .fontWeight(.medium)
             }

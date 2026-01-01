@@ -44,6 +44,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				App/AppConstants.swift,
+				App/AppLanguage.swift,
 				Models/Folder.swift,
 				Models/Link.swift,
 				Models/ModelContainerFactory.swift,
@@ -189,6 +190,16 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				de,
+				es,
+				"es-419",
+				fr,
+				ja,
+				ko,
+				"pt-BR",
+				tr,
+				"zh-Hans",
+				"zh-Hant",
 				Base,
 			);
 			mainGroup = 67B1DE782F02601C009F3EF0;

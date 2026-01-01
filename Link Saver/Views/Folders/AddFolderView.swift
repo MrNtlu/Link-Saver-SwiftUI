@@ -25,19 +25,19 @@ struct AddFolderView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Folder Name") {
-                    TextField("Name", text: $name)
+                Section("folder.section.name") {
+                    TextField("common.name", text: $name)
                 }
 
-                Section("Icon") {
-                    TextField("Search icons", text: $iconSearchText)
+                Section("folder.section.icon") {
+                    TextField("folder.icon.search", text: $iconSearchText)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
 
                     ScrollView {
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: 16) {
                             if filteredIcons.isEmpty {
-                                Text("No icons found")
+                                Text("folder.icon.empty")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -65,16 +65,16 @@ struct AddFolderView: View {
                     .frame(maxHeight: 320)
                 }
             }
-            .navigationTitle("New Folder")
+            .navigationTitle("folder.add.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("common.cancel") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Create") {
+                    Button("common.create") {
                         createFolder()
                     }
                     .disabled(name.isEmpty)

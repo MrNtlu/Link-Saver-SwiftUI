@@ -50,20 +50,20 @@ struct FolderDetailView: View {
             }
         }
         .navigationTitle(folder.name)
-        .searchable(text: $searchText, prompt: "Search in \(folder.name)")
+        .searchable(text: $searchText, prompt: Text("folderDetail.search.prompt \(folder.name)"))
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Button {
                         showEditSheet = true
                     } label: {
-                        Label("Edit Folder", systemImage: "pencil")
+                        Label("folderDetail.edit", systemImage: "pencil")
                     }
 
                     Button(role: .destructive) {
                         showDeleteAlert = true
                     } label: {
-                        Label("Delete Folder", systemImage: "trash")
+                        Label("folderDetail.delete", systemImage: "trash")
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
@@ -73,22 +73,22 @@ struct FolderDetailView: View {
         .sheet(isPresented: $showEditSheet) {
             EditFolderView(folder: folder)
         }
-        .alert("Delete Folder", isPresented: $showDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert("folderDetail.delete.title", isPresented: $showDeleteAlert) {
+            Button("common.cancel", role: .cancel) { }
+            Button("common.delete", role: .destructive) {
                 deleteFolder()
             }
         } message: {
-            Text("Are you sure you want to delete this folder? Links in this folder will not be deleted.")
+            Text("folderDetail.delete.message")
         }
     }
 
     // MARK: - Empty State
     private var emptyStateView: some View {
         ContentUnavailableView {
-            Label("No Links", systemImage: "link")
+            Label("links.empty.title", systemImage: "link")
         } description: {
-            Text("This folder is empty. Add links from the Links tab or Share Extension.")
+            Text("folderDetail.empty.message")
         }
     }
 
@@ -103,7 +103,7 @@ struct FolderDetailView: View {
                     Button(role: .destructive) {
                         removeFromFolder(link)
                     } label: {
-                        Label("Remove", systemImage: "folder.badge.minus")
+                        Label("common.remove", systemImage: "folder.badge.minus")
                     }
                 }
             }
@@ -141,19 +141,19 @@ struct EditFolderView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Folder Name") {
-                    TextField("Name", text: $name)
+                Section("folder.section.name") {
+                    TextField("common.name", text: $name)
                 }
 
-                Section("Icon") {
-                    TextField("Search icons", text: $iconSearchText)
+                Section("folder.section.icon") {
+                    TextField("folder.icon.search", text: $iconSearchText)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
 
                     ScrollView {
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: 16) {
                             if filteredIcons.isEmpty {
-                                Text("No icons found")
+                                Text("folder.icon.empty")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -181,16 +181,16 @@ struct EditFolderView: View {
                     .frame(maxHeight: 320)
                 }
             }
-            .navigationTitle("Edit Folder")
+            .navigationTitle("folder.edit.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("common.cancel") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    Button("common.save") {
                         saveChanges()
                     }
                     .disabled(name.isEmpty)

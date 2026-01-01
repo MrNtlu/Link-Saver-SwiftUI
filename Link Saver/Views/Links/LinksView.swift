@@ -75,13 +75,13 @@ struct LinksView: View {
                     linksList
                 }
             }
-            .navigationTitle("Links")
+            .navigationTitle("tab.links")
             .navigationBarTitleDisplayMode(.large)
             .searchable(
                 text: $searchText,
                 isPresented: $isSearching,
                 placement: .navigationBarDrawer(displayMode: .automatic),
-                prompt: "Search links"
+                prompt: "links.search.prompt"
             )
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -97,15 +97,15 @@ struct LinksView: View {
             ContentUnavailableView.search(text: searchText)
         } else if let tag = selectedTagFilter {
             ContentUnavailableView {
-                Label("No Links", systemImage: "tag")
+                Label("links.empty.title", systemImage: "tag")
             } description: {
-                Text("No links match the “\(tag.name)” tag.")
+                Text("links.empty.filteredByTag \(tag.name)")
             }
         } else {
             ContentUnavailableView {
-                Label("No Links", systemImage: "link")
+                Label("links.empty.title", systemImage: "link")
             } description: {
-                Text("No links match the current filters.")
+                Text("links.empty.filtered")
             }
         }
     }
@@ -113,9 +113,9 @@ struct LinksView: View {
     // MARK: - Empty State
     private var emptyStateView: some View {
         ContentUnavailableView {
-            Label("No Links", systemImage: "link.badge.plus")
+            Label("links.empty.title", systemImage: "link.badge.plus")
         } description: {
-            Text("Save links from Safari or other apps using the Share button, or use + to add manually.")
+            Text("links.empty.message")
         }
     }
 
@@ -147,15 +147,16 @@ struct LinksView: View {
                     Button(role: .destructive) {
                         deleteLink(link)
                     } label: {
-                        Label("Delete", systemImage: "trash")
+                        Label("common.delete", systemImage: "trash")
                     }
                 }
                 .swipeActions(edge: .leading) {
                     Button {
                         togglePinned(link)
                     } label: {
+                        let titleKey: LocalizedStringKey = link.isPinned ? "common.unpin" : "common.pin"
                         Label(
-                            link.isPinned ? "Unpin" : "Pin",
+                            titleKey,
                             systemImage: link.isPinned ? "pin.slash" : "pin.fill"
                         )
                     }
@@ -164,8 +165,9 @@ struct LinksView: View {
                     Button {
                         toggleFavorite(link)
                     } label: {
+                        let titleKey: LocalizedStringKey = link.isFavorite ? "common.unfavorite" : "common.favorite"
                         Label(
-                            link.isFavorite ? "Unfavorite" : "Favorite",
+                            titleKey,
                             systemImage: link.isFavorite ? "star.slash" : "star.fill"
                         )
                     }
@@ -184,7 +186,7 @@ struct LinksView: View {
                     sortOption = option
                 } label: {
                     HStack {
-                        Text(option.rawValue)
+                        Text(option.titleKey)
                         if sortOption == option {
                             Image(systemName: "checkmark")
                         }

@@ -14,10 +14,10 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    var displayName: String {
+    var displayNameKey: LocalizedStringKey {
         switch self {
-        case .light: return "Light"
-        case .dark: return "Dark"
+        case .light: return "theme.light"
+        case .dark: return "theme.dark"
         }
     }
 
@@ -34,4 +34,3 @@ enum ThemePreferences {
     static let store = UserDefaults(suiteName: AppConstants.appGroupID)
     static let defaultTheme: AppTheme = .light
 }
-

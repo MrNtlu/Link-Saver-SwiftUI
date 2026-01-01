@@ -15,6 +15,8 @@ struct SettingsView: View {
 
     @AppStorage(ThemePreferences.key, store: ThemePreferences.store)
     private var themeRawValue: String = ThemePreferences.defaultTheme.rawValue
+    @AppStorage(LanguagePreferences.key, store: LanguagePreferences.store)
+    private var languageRawValue: String = LanguagePreferences.defaultLanguage.rawValue
 
     private var selectedTheme: Binding<AppTheme> {
         Binding(
@@ -23,40 +25,55 @@ struct SettingsView: View {
         )
     }
 
+    private var selectedLanguage: Binding<AppLanguage> {
+        Binding(
+            get: { AppLanguage(rawValue: languageRawValue) ?? LanguagePreferences.defaultLanguage },
+            set: { languageRawValue = $0.rawValue }
+        )
+    }
+
     var body: some View {
         NavigationStack {
             List {
-                // Statistics Section
-                Section("Statistics") {
-                    StatRow(title: "Total Links", value: "\(links.count)", icon: "link")
-                    StatRow(title: "Folders", value: "\(folders.count)", icon: "folder")
-                    StatRow(title: "Tags", value: "\(tags.count)", icon: "tag")
-                    StatRow(title: "Favorites", value: "\(links.filter { $0.isFavorite }.count)", icon: "star.fill")
+                // App Settings Section
+                Section("settings.section.appSettings") {
+                    Picker("settings.theme", selection: selectedTheme) {
+                        ForEach(AppTheme.allCases) { theme in
+                            Text(theme.displayNameKey).tag(theme)
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
+
+                    Picker("settings.language", selection: selectedLanguage) {
+                        ForEach(AppLanguage.allCases) { language in
+                            Text(language.displayNameKey)
+                                .tag(language)
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
                 }
 
-                // Organization Section
-                Section("Organization") {
+                // Tags Section
+                Section("settings.section.tags") {
                     NavigationLink {
                         TagManagementView()
                     } label: {
-                        Label("Manage Tags", systemImage: "tag")
+                        Label("settings.manageTags", systemImage: "tag")
                     }
                 }
 
-                // Appearance Section
-                Section("Appearance") {
-                    Picker("Theme", selection: selectedTheme) {
-                        ForEach(AppTheme.allCases) { theme in
-                            Text(theme.displayName).tag(theme)
-                        }
-                    }
-                    .pickerStyle(.segmented)
+                // Statistics Section
+                Section("settings.section.statistics") {
+                    StatRow(title: "settings.stats.totalLinks", value: "\(links.count)", icon: "link")
+                    StatRow(title: "settings.stats.folders", value: "\(folders.count)", icon: "folder")
+                    StatRow(title: "settings.stats.tags", value: "\(tags.count)", icon: "tag")
+                    StatRow(title: "settings.stats.favorites", value: "\(links.filter { $0.isFavorite }.count)", icon: "star.fill")
                 }
 
                 // About Section
-                Section("About") {
+                Section("settings.section.about") {
                     HStack {
-                        Text("Version")
+                        Text("settings.version")
                         Spacer()
                         Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
                             .foregroundStyle(.secondary)
@@ -64,9 +81,9 @@ struct SettingsView: View {
 
                     if #available(iOS 26, *) {
                         HStack {
-                            Text("Design")
+                            Text("settings.design")
                             Spacer()
-                            Text("Liquid Glass")
+                            Text("settings.design.liquidGlass")
                                 .foregroundStyle(.secondary)
                         }
                     }
@@ -84,14 +101,14 @@ struct SettingsView: View {
                 //     }
                 // }
             }
-            .navigationTitle("Settings")
+            .navigationTitle(Text("tab.settings"))
         }
     }
 }
 
 // MARK: - Stat Row
 struct StatRow: View {
-    let title: String
+    let title: LocalizedStringKey
     let value: String
     let icon: String
 

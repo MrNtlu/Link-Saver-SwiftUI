@@ -18,7 +18,7 @@ struct FoldersView: View {
     var body: some View {
         NavigationStack {
             foldersContent
-            .navigationTitle("Folders")
+            .navigationTitle(Text("tab.folders"))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -51,13 +51,13 @@ struct FoldersView: View {
                             Button {
                                 // Edit action would go here
                             } label: {
-                                Label("Edit", systemImage: "pencil")
+                                Label("common.edit", systemImage: "pencil")
                             }
 
                             Button(role: .destructive) {
                                 deleteFolder(folder)
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Label("common.delete", systemImage: "trash")
                             }
                         }
                     }
@@ -72,17 +72,17 @@ struct FoldersView: View {
             FavoritesCardView(count: favoriteLinks.count)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Favorites")
+        .accessibilityLabel(Text("folders.favorites.title"))
     }
 
     // MARK: - Empty State
     private var emptyStateView: some View {
         ContentUnavailableView {
-            Label("No Folders", systemImage: "folder")
+            Label("folders.empty.title", systemImage: "folder")
         } description: {
-            Text("Create folders to organize your saved links.")
+            Text("folders.empty.message")
         } actions: {
-            Button("Create Folder") {
+            Button("folders.create") {
                 showAddFolder = true
             }
             .buttonStyle(.borderedProminent)
@@ -91,10 +91,10 @@ struct FoldersView: View {
 
     private var emptyStateCard: some View {
         EmptyStateView(
-            title: "No Folders",
-            message: "Create folders to organize your saved links.",
+            title: "folders.empty.title",
+            message: "folders.empty.message",
             systemImage: "folder",
-            actionTitle: "Create Folder"
+            actionTitle: "folders.create"
         ) {
             showAddFolder = true
         }
@@ -124,13 +124,19 @@ private struct FavoritesCardView: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("Favorites")
+                Text("folders.favorites.title")
                     .font(.headline)
                     .foregroundStyle(.primary)
 
-                Text("\(count) link\(count == 1 ? "" : "s")")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                Group {
+                    if count == 1 {
+                        Text("folders.favorites.linkCount.one \(count)")
+                    } else {
+                        Text("folders.favorites.linkCount.other \(count)")
+                    }
+                }
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
             }
 
             Spacer()

@@ -40,9 +40,9 @@ struct FavoritesView: View {
         Group {
             if favoriteLinks.isEmpty {
                 ContentUnavailableView {
-                    Label("No Favorites", systemImage: "star")
+                    Label("favorites.empty.title", systemImage: "star")
                 } description: {
-                    Text("Favorite links from the Links tab to see them here.")
+                    Text("favorites.empty.message")
                 }
             } else if filteredLinks.isEmpty {
                 ContentUnavailableView.search(text: searchText)
@@ -56,8 +56,9 @@ struct FavoritesView: View {
                         Button {
                             togglePinned(link)
                         } label: {
+                            let titleKey: LocalizedStringKey = link.isPinned ? "common.unpin" : "common.pin"
                             Label(
-                                link.isPinned ? "Unpin" : "Pin",
+                                titleKey,
                                 systemImage: link.isPinned ? "pin.slash" : "pin.fill"
                             )
                         }
@@ -66,7 +67,7 @@ struct FavoritesView: View {
                         Button {
                             toggleFavorite(link)
                         } label: {
-                            Label("Unfavorite", systemImage: "star.slash")
+                            Label("common.unfavorite", systemImage: "star.slash")
                         }
                         .tint(.yellow)
                     }
@@ -74,7 +75,7 @@ struct FavoritesView: View {
                             Button(role: .destructive) {
                                 deleteLink(link)
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Label("common.delete", systemImage: "trash")
                             }
                         }
                     }
@@ -82,8 +83,8 @@ struct FavoritesView: View {
                 .listStyle(.plain)
             }
         }
-        .navigationTitle("Favorites")
-        .searchable(text: $searchText, prompt: "Search favorites")
+        .navigationTitle("folders.favorites.title")
+        .searchable(text: $searchText, prompt: "favorites.search.prompt")
     }
 
     private func toggleFavorite(_ link: Link) {

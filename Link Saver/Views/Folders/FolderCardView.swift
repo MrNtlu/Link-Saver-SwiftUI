@@ -30,9 +30,15 @@ struct FolderCardView: View {
                     .font(.headline)
                     .foregroundStyle(.primary)
 
-                Text("\(folder.linkCount) link\(folder.linkCount == 1 ? "" : "s")")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                Group {
+                    if folder.linkCount == 1 {
+                        Text("folders.linkCount.one \(folder.linkCount)")
+                    } else {
+                        Text("folders.linkCount.other \(folder.linkCount)")
+                    }
+                }
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
             }
 
             Spacer()

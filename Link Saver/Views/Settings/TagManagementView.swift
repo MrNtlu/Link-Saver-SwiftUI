@@ -23,7 +23,7 @@ struct TagManagementView: View {
                 tagsList
             }
         }
-        .navigationTitle("Tags")
+        .navigationTitle("tags.title")
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
@@ -44,11 +44,11 @@ struct TagManagementView: View {
     // MARK: - Empty State
     private var emptyStateView: some View {
         ContentUnavailableView {
-            Label("No Tags", systemImage: "tag")
+            Label("tags.empty.title", systemImage: "tag")
         } description: {
-            Text("Create tags to organize your links.")
+            Text("tags.empty.message")
         } actions: {
-            Button("Create Tag") {
+            Button("tags.create") {
                 showAddTag = true
             }
             .buttonStyle(.borderedProminent)
@@ -72,16 +72,22 @@ struct TagManagementView: View {
 
                         Spacer()
 
-                        Text("\(tag.linkCount) link\(tag.linkCount == 1 ? "" : "s")")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        Group {
+                            if tag.linkCount == 1 {
+                                Text("tags.linkCount.one \(tag.linkCount)")
+                            } else {
+                                Text("tags.linkCount.other \(tag.linkCount)")
+                            }
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                     }
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
                         deleteTag(tag)
                     } label: {
-                        Label("Delete", systemImage: "trash")
+                        Label("common.delete", systemImage: "trash")
                     }
                 }
             }
@@ -106,11 +112,11 @@ struct AddTagView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Tag Name") {
-                    TextField("Name", text: $name)
+                Section("tags.section.name") {
+                    TextField("common.name", text: $name)
                 }
 
-                Section("Color") {
+                Section("common.color") {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 16) {
                         ForEach(AppConstants.defaultTagColors, id: \.self) { colorHex in
                             Button {
@@ -134,27 +140,24 @@ struct AddTagView: View {
                 }
 
                 // Preview
-                Section("Preview") {
+                Section("common.preview") {
                     HStack {
                         Spacer()
-                        TagChip(
-                            tag: Tag(name: name.isEmpty ? "Tag" : name, colorHex: selectedColor),
-                            isCompact: false
-                        )
+                        TagPreviewChip(name: name, colorHex: selectedColor)
                         Spacer()
                     }
                 }
             }
-            .navigationTitle("New Tag")
+            .navigationTitle("tags.add.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("common.cancel") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Create") {
+                    Button("common.create") {
                         createTag()
                     }
                     .disabled(name.isEmpty)
@@ -181,11 +184,11 @@ struct EditTagView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Tag Name") {
-                    TextField("Name", text: $name)
+                Section("tags.section.name") {
+                    TextField("common.name", text: $name)
                 }
 
-                Section("Color") {
+                Section("common.color") {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 16) {
                         ForEach(AppConstants.defaultTagColors, id: \.self) { colorHex in
                             Button {
@@ -209,27 +212,24 @@ struct EditTagView: View {
                 }
 
                 // Preview
-                Section("Preview") {
+                Section("common.preview") {
                     HStack {
                         Spacer()
-                        TagChip(
-                            tag: Tag(name: name.isEmpty ? "Tag" : name, colorHex: selectedColor),
-                            isCompact: false
-                        )
+                        TagPreviewChip(name: name, colorHex: selectedColor)
                         Spacer()
                     }
                 }
             }
-            .navigationTitle("Edit Tag")
+            .navigationTitle("tags.edit.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("common.cancel") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    Button("common.save") {
                         saveChanges()
                     }
                     .disabled(name.isEmpty)
@@ -246,6 +246,40 @@ struct EditTagView: View {
         tag.name = name
         tag.colorHex = selectedColor
         dismiss()
+    }
+}
+
+private struct TagPreviewChip: View {
+    let name: String
+    let colorHex: String
+
+    private var displayNameIsEmpty: Bool {
+        name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private var chipColor: Color {
+        Color(hex: colorHex) ?? .blue
+    }
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(chipColor)
+                .frame(width: 8, height: 8)
+
+            if displayNameIsEmpty {
+                Text("tags.preview.placeholder")
+            } else {
+                Text(verbatim: name)
+            }
+        }
+        .font(.caption)
+        .fontWeight(.medium)
+        .lineLimit(1)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(chipColor.opacity(0.15))
+        .clipShape(Capsule())
     }
 }
 

@@ -53,7 +53,7 @@ struct LinkDetailView: View {
             .padding()
         }
         .background(Color(uiColor: .systemGroupedBackground))
-        .navigationTitle("Link Details")
+        .navigationTitle("linkDetail.title")
         .navigationBarTitleDisplayMode(.inline)
         .groupBoxStyle(DetailCardGroupBoxStyle())
         .toolbar {
@@ -62,14 +62,15 @@ struct LinkDetailView: View {
                     Button {
                         showEditSheet = true
                     } label: {
-                        Label("Edit", systemImage: "pencil")
+                        Label("common.edit", systemImage: "pencil")
                     }
 
                     Button {
                         togglePinned()
                     } label: {
+                        let titleKey: LocalizedStringKey = link.isPinned ? "common.unpin" : "common.pin"
                         Label(
-                            link.isPinned ? "Unpin" : "Pin",
+                            titleKey,
                             systemImage: link.isPinned ? "pin.slash" : "pin.fill"
                         )
                     }
@@ -77,8 +78,9 @@ struct LinkDetailView: View {
                     Button {
                         toggleFavorite()
                     } label: {
+                        let titleKey: LocalizedStringKey = link.isFavorite ? "linkDetail.favorites.remove" : "linkDetail.favorites.add"
                         Label(
-                            link.isFavorite ? "Remove from Favorites" : "Add to Favorites",
+                            titleKey,
                             systemImage: link.isFavorite ? "star.slash" : "star"
                         )
                     }
@@ -88,7 +90,7 @@ struct LinkDetailView: View {
                     Button(role: .destructive) {
                         showDeleteAlert = true
                     } label: {
-                        Label("Delete", systemImage: "trash")
+                        Label("common.delete", systemImage: "trash")
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
@@ -98,13 +100,13 @@ struct LinkDetailView: View {
         .sheet(isPresented: $showEditSheet) {
             EditLinkView(link: link)
         }
-        .alert("Delete Link", isPresented: $showDeleteAlert) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert("linkDetail.delete.title", isPresented: $showDeleteAlert) {
+            Button("common.cancel", role: .cancel) { }
+            Button("common.delete", role: .destructive) {
                 deleteLink()
             }
         } message: {
-            Text("Are you sure you want to delete this link?")
+            Text("linkDetail.delete.message")
         }
     }
 
@@ -185,7 +187,7 @@ struct LinkDetailView: View {
             Button {
                 openLink()
             } label: {
-                Label("Open", systemImage: "safari")
+                Label("common.open", systemImage: "safari")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
@@ -193,7 +195,7 @@ struct LinkDetailView: View {
             Button {
                 shareLink()
             } label: {
-                Label("Share", systemImage: "square.and.arrow.up")
+                Label("common.share", systemImage: "square.and.arrow.up")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
@@ -202,7 +204,7 @@ struct LinkDetailView: View {
             Button {
                 copyLink()
             } label: {
-                Label("Copy", systemImage: "doc.on.doc")
+                Label("common.copy", systemImage: "doc.on.doc")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
@@ -216,7 +218,7 @@ struct LinkDetailView: View {
             HStack(alignment: .firstTextBaseline, spacing: 10) {
                 DetailCardIcon(systemImage: "link")
 
-                Text("URL")
+                Text("common.url")
                     .font(.callout.weight(.semibold))
                     .foregroundStyle(.primary)
 
@@ -243,13 +245,13 @@ struct LinkDetailView: View {
             HStack(alignment: .firstTextBaseline, spacing: 10) {
                 DetailCardIcon(systemImage: "tag")
 
-                Text("Tags")
+                Text("common.tags")
                     .font(.callout.weight(.semibold))
                     .foregroundStyle(.primary)
 
                 Group {
                     if sortedTags.isEmpty {
-                        Text("Not set")
+                        Text("common.notSet")
                             .font(.callout)
                             .foregroundStyle(.secondary)
                     } else {
@@ -284,7 +286,7 @@ struct LinkDetailView: View {
             HStack(alignment: .firstTextBaseline, spacing: 10) {
                 DetailCardIcon(systemImage: "folder")
 
-                Text("Folder")
+                Text("common.folder")
                     .font(.callout.weight(.semibold))
                     .foregroundStyle(.primary)
 
@@ -298,7 +300,7 @@ struct LinkDetailView: View {
                     .buttonStyle(.plain)
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 } else {
-                    Text("Not set")
+                    Text("common.notSet")
                         .font(.callout)
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .trailing)
@@ -315,16 +317,16 @@ struct LinkDetailView: View {
     private var metadataSection: some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 10) {
-                LabeledContent("Added") {
+                LabeledContent("linkDetail.metadata.added") {
                     Text(link.dateAdded, style: .date)
                 }
 
-                LabeledContent("Metadata fetched") {
-                    Text(link.metadataFetched ? "Yes" : "No")
+                LabeledContent("linkDetail.metadata.fetched") {
+                    Text(link.metadataFetched ? LocalizedStringKey("common.yes") : LocalizedStringKey("common.no"))
                 }
 
                 if let lastAttempt = link.lastMetadataFetchAttempt {
-                    LabeledContent("Last attempt") {
+                    LabeledContent("linkDetail.metadata.lastAttempt") {
                         Text(lastAttempt, style: .relative)
                     }
                 }
@@ -333,7 +335,7 @@ struct LinkDetailView: View {
             .foregroundStyle(.secondary)
         } label: {
             HStack {
-                DetailCardHeader(title: "Metadata", systemImage: "info.circle")
+                DetailCardHeader(title: "linkDetail.metadata.title", systemImage: "info.circle")
                 Spacer()
                 Button {
                     refreshMetadata()
@@ -409,7 +411,7 @@ struct LinkDetailView: View {
                 .font(.callout)
                 .textSelection(.enabled)
         } label: {
-            DetailCardHeader(title: "Notes", systemImage: "note.text")
+            DetailCardHeader(title: "linkDetail.notes.title", systemImage: "note.text")
         }
     }
 
@@ -456,7 +458,7 @@ private struct DetailCardIcon: View {
 }
 
 private struct DetailCardHeader: View {
-    let title: String
+    let title: LocalizedStringKey
     let systemImage: String
 
     var body: some View {
@@ -526,19 +528,19 @@ struct EditLinkView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Details") {
-                    TextField("Title", text: $title)
-                    TextField("URL", text: $url)
+                Section("addLink.section.details") {
+                    TextField("common.title", text: $title)
+                    TextField("common.url", text: $url)
                         .textInputAutocapitalization(.never)
                         .keyboardType(.URL)
 
-                    TextField("Notes (optional)", text: $notes, axis: .vertical)
+                    TextField("common.notesOptional", text: $notes, axis: .vertical)
                         .lineLimit(3...8)
                 }
 
-                Section("Folder") {
-                    Picker("Folder", selection: $selectedFolder) {
-                        Text("None").tag(nil as Folder?)
+                Section("common.folder") {
+                    Picker("common.folder", selection: $selectedFolder) {
+                        Text("common.none").tag(nil as Folder?)
                         ForEach(folders) { folder in
                             Label(folder.name, systemImage: folder.iconName)
                                 .tag(folder as Folder?)
@@ -546,7 +548,7 @@ struct EditLinkView: View {
                     }
                 }
 
-                Section("Tags") {
+                Section("common.tags") {
                     ForEach(allTags) { tag in
                         Button {
                             toggleTag(tag)
@@ -567,16 +569,16 @@ struct EditLinkView: View {
                     }
                 }
             }
-            .navigationTitle("Edit Link")
+            .navigationTitle("editLink.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("common.cancel") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    Button("common.save") {
                         saveChanges()
                     }
                 }

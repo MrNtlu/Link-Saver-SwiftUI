@@ -26,7 +26,7 @@ struct AddLinkView: View {
     @State private var lastFetchedURL: URL?
     @State private var fetchTask: Task<Void, Never>?
     @State private var didUserEditTitle = false
-    @State private var errorMessage: String?
+    @State private var errorKey: String?
     @State private var isSaving = false
     @State private var showAddTag = false
 
@@ -43,7 +43,7 @@ struct AddLinkView: View {
             Form {
                 // URL Input
                 Section {
-                    TextField("Enter URL", text: $urlText)
+                    TextField("addLink.url.placeholder", text: $urlText)
                         .textInputAutocapitalization(.never)
                         .keyboardType(.URL)
                         .autocorrectionDisabled()
@@ -61,7 +61,7 @@ struct AddLinkView: View {
                         } label: {
                             HStack(spacing: 8) {
                                 Image(systemName: "sparkles")
-                                Text("Fetch Preview")
+                                Text("common.fetchPreview")
                                 Spacer()
                                 if isFetching {
                                     ProgressView()
@@ -78,7 +78,7 @@ struct AddLinkView: View {
                         HStack {
                             ProgressView()
                                 .scaleEffect(0.8)
-                            Text("Fetching preview...")
+                            Text("common.fetchingPreview")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -86,32 +86,32 @@ struct AddLinkView: View {
 
                     previewCard
 
-                    if let error = errorMessage {
-                        Text(error)
+                    if let errorKey {
+                        Text(LocalizedStringKey(errorKey))
                             .font(.caption)
                             .foregroundStyle(.red)
                     }
                 } header: {
-                    Text("URL")
+                    Text("common.url")
                 } footer: {
-                    Text("Enter a website URL to save")
+                    Text("addLink.url.footer")
                 }
 
-                Section("Details") {
-                    TextField("Title", text: $titleText) { isEditing in
+                Section("addLink.section.details") {
+                    TextField("common.title", text: $titleText) { isEditing in
                         if isEditing {
                             didUserEditTitle = true
                         }
                     }
 
-                    TextField("Notes (optional)", text: $notesText, axis: .vertical)
+                    TextField("common.notesOptional", text: $notesText, axis: .vertical)
                         .lineLimit(3...8)
                 }
 
                 // Folder Selection
-                Section("Folder") {
-                    Picker("Save to folder", selection: $selectedFolder) {
-                        Text("None").tag(nil as Folder?)
+                Section("common.folder") {
+                    Picker("addLink.folder.picker", selection: $selectedFolder) {
+                        Text("common.none").tag(nil as Folder?)
                         ForEach(folders) { folder in
                             Label(folder.name, systemImage: folder.iconName)
                                 .tag(folder as Folder?)
@@ -122,11 +122,11 @@ struct AddLinkView: View {
                 Section {
                     if allTags.isEmpty {
                         ContentUnavailableView {
-                            Label("No Tags", systemImage: "tag")
+                            Label("tags.empty.title", systemImage: "tag")
                         } description: {
-                            Text("Create tags to organize your links.")
+                            Text("tags.empty.message")
                         } actions: {
-                            Button("Create Tag") {
+                            Button("tags.create") {
                                 showAddTag = true
                             }
                             .buttonStyle(.borderedProminent)
@@ -156,21 +156,21 @@ struct AddLinkView: View {
                         Button {
                             showAddTag = true
                         } label: {
-                            Label("Create Tag", systemImage: "plus")
+                            Label("tags.create", systemImage: "plus")
                         }
                     }
                 } header: {
-                    Text("Tags")
+                    Text("common.tags")
                 }
             }
-            .navigationTitle("Add Link")
+            .navigationTitle("addLink.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     if isSaving {
                         ProgressView()
                     } else {
-                        Button("Save") {
+                        Button("common.save") {
                             saveLink()
                         }
                         .disabled(!isValidURL || isFetching)
@@ -180,7 +180,7 @@ struct AddLinkView: View {
         }
         .onAppear {
             if urlText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                errorMessage = nil
+                errorKey = nil
             }
         }
         .onDisappear {
@@ -220,7 +220,7 @@ struct AddLinkView: View {
     }
 
     private func handleURLChange(_ newValue: String) {
-        errorMessage = nil
+        errorKey = nil
         fetchedTitle = nil
         fetchedDescription = nil
 
@@ -249,7 +249,7 @@ struct AddLinkView: View {
 
             await MainActor.run {
                 isFetching = true
-                errorMessage = nil
+                errorKey = nil
             }
 
             do {
@@ -269,7 +269,7 @@ struct AddLinkView: View {
                         isFetching = false
                         return
                     }
-                    errorMessage = "Could not fetch preview"
+                    errorKey = "error.previewFetchFailed"
                     isFetching = false
                 }
             }
@@ -280,7 +280,7 @@ struct AddLinkView: View {
         guard let url = urlText.normalizedURL else { return }
 
         isSaving = true
-        errorMessage = nil
+        errorKey = nil
         fetchTask?.cancel()
 
         let link = Link(url: url.absoluteString)
@@ -304,7 +304,7 @@ struct AddLinkView: View {
             isSaving = false
             onSaved?()
         } catch {
-            errorMessage = "Failed to save link: \(error.localizedDescription)"
+            errorKey = "error.saveFailed"
             isSaving = false
         }
     }
@@ -321,7 +321,7 @@ struct AddLinkView: View {
         fetchedDescription = nil
         lastFetchedURL = nil
         didUserEditTitle = false
-        errorMessage = nil
+        errorKey = nil
         showAddTag = false
     }
 }
