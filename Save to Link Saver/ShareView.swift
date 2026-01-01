@@ -75,6 +75,9 @@ struct ShareView: View {
             didUserEditTitle = (title != nil && !(title ?? "").isEmpty)
             fetchPreviewIfPossible(force: false)
         }
+        .onDisappear {
+            fetchTask?.cancel()
+        }
     }
 
     // MARK: - Content View
@@ -221,6 +224,7 @@ struct ShareView: View {
         }
 
         isSaving = true
+        fetchTask?.cancel()
 
         // Create and save the link
         let link = Link(url: normalizedURL.absoluteString)
@@ -328,6 +332,10 @@ struct ShareView: View {
                 }
             } catch {
                 await MainActor.run {
+                    if error is CancellationError || Task.isCancelled {
+                        isFetching = false
+                        return
+                    }
                     errorMessage = "Could not fetch preview"
                     isFetching = false
                 }

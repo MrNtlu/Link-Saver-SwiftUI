@@ -18,19 +18,28 @@ enum ModelContainerFactory {
         ])
     }
 
-    /// URL for the shared database container (App Groups)
+    /// URL for the database stored in this target's Documents directory (legacy, not shared with extensions).
+    static var legacyDocumentsContainerURL: URL {
+        URL.documentsDirectory.appending(path: AppConstants.databaseName)
+    }
+
+    /// URL for the shared database container (App Groups), if App Groups are configured correctly.
+    static var appGroupContainerURL: URL? {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppConstants.appGroupID)?
+            .appending(path: AppConstants.databaseName)
+    }
+
+    /// URL for the database we should use for this process.
     static var sharedContainerURL: URL {
-        guard let containerURL = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: AppConstants.appGroupID
-        ) else {
-            // Fallback to app's documents directory if App Groups not configured
-            return URL.documentsDirectory.appending(path: AppConstants.databaseName)
-        }
-        return containerURL.appending(path: AppConstants.databaseName)
+        appGroupContainerURL ?? legacyDocumentsContainerURL
     }
 
     /// Creates a ModelContainer for production use with App Groups
     static func createSharedContainer() -> ModelContainer {
+        if let appGroupURL = appGroupContainerURL {
+            migrateLegacyStoreIfNeeded(from: legacyDocumentsContainerURL, to: appGroupURL)
+        }
+
         let modelConfiguration = ModelConfiguration(
             schema: schema,
             url: sharedContainerURL,
@@ -44,6 +53,31 @@ enum ModelContainerFactory {
             fatalError("Could not create ModelContainer: \(error.localizedDescription)")
         }
 	    }
+
+    private static func migrateLegacyStoreIfNeeded(from legacyURL: URL, to sharedURL: URL) {
+        guard legacyURL != sharedURL else { return }
+
+        let fileManager = FileManager.default
+        guard fileManager.fileExists(atPath: legacyURL.path) else { return }
+        guard !fileManager.fileExists(atPath: sharedURL.path) else { return }
+
+        do {
+            try fileManager.createDirectory(
+                at: sharedURL.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
+
+            for suffix in ["", "-shm", "-wal"] {
+                let sourceURL = URL(fileURLWithPath: legacyURL.path + suffix)
+                guard fileManager.fileExists(atPath: sourceURL.path) else { continue }
+
+                let destinationURL = URL(fileURLWithPath: sharedURL.path + suffix)
+                try fileManager.copyItem(at: sourceURL, to: destinationURL)
+            }
+        } catch {
+            print("[LinkSaver] Failed to migrate legacy store to App Group container: \(error.localizedDescription)")
+        }
+    }
 	
 	    /// Creates a ModelContainer for SwiftUI previews (in-memory)
 	    @MainActor

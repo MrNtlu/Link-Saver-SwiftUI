@@ -178,6 +178,14 @@ struct AddLinkView: View {
                 }
             }
         }
+        .onAppear {
+            if urlText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                errorMessage = nil
+            }
+        }
+        .onDisappear {
+            fetchTask?.cancel()
+        }
         .sheet(isPresented: $showAddTag) {
             AddTagView()
         }
@@ -257,6 +265,10 @@ struct AddLinkView: View {
                 }
             } catch {
                 await MainActor.run {
+                    if error is CancellationError || Task.isCancelled {
+                        isFetching = false
+                        return
+                    }
                     errorMessage = "Could not fetch preview"
                     isFetching = false
                 }
@@ -269,6 +281,7 @@ struct AddLinkView: View {
 
         isSaving = true
         errorMessage = nil
+        fetchTask?.cancel()
 
         let link = Link(url: url.absoluteString)
         link.title = titleText.isEmpty ? fetchedTitle : titleText
@@ -308,6 +321,8 @@ struct AddLinkView: View {
         fetchedDescription = nil
         lastFetchedURL = nil
         didUserEditTitle = false
+        errorMessage = nil
+        showAddTag = false
     }
 }
 

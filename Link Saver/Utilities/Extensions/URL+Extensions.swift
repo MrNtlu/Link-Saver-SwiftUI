@@ -41,12 +41,22 @@ extension String {
     var normalizedURL: URL? {
         var urlString = self.trimmingCharacters(in: .whitespacesAndNewlines)
 
+        guard !urlString.isEmpty else { return nil }
+
         // Add https:// if no scheme present
         if !urlString.lowercased().hasPrefix("http://") && !urlString.lowercased().hasPrefix("https://") {
             urlString = "https://" + urlString
         }
 
         guard let url = URL(string: urlString), url.isValidWebURL else {
+            return nil
+        }
+
+        guard let host = url.host, !host.isEmpty else { return nil }
+
+        // Heuristic: require a "real" host to avoid treating arbitrary text as a URL (e.g. "a" -> "https://a").
+        // Allow localhost and IPv6.
+        if host != "localhost" && !host.contains(".") && !host.contains(":") {
             return nil
         }
 

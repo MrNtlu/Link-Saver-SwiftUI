@@ -208,7 +208,7 @@ TabView {
 ## Share Extension
 
 ### App Group ID
-`group.com.linksaver.shared`
+`group.linksaver.share`
 
 ### Required Capabilities
 1. App Groups (both targets)

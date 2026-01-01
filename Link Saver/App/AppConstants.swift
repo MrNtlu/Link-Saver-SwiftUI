@@ -9,7 +9,7 @@ import Foundation
 
 enum AppConstants {
     /// App Group identifier for sharing data with Share Extension
-    static let appGroupID = "group.com.linksaver.shared"
+    static let appGroupID = "group.linksaver.share"
 
     /// Database file name
     static let databaseName = "LinkSaver.sqlite"
