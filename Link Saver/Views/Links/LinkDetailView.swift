@@ -516,7 +516,12 @@ private struct DetailTagChip: View {
 struct EditLinkView: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var link: Link
-    @Query private var folders: [Folder]
+    @Query(
+        sort: [
+            SortDescriptor(\Folder.sortOrder, order: .forward),
+            SortDescriptor(\Folder.name, order: .forward)
+        ]
+    ) private var folders: [Folder]
     @Query private var allTags: [Tag]
 
     @State private var title: String = ""

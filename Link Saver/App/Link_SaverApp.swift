@@ -26,7 +26,7 @@ struct Link_SaverApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            RootView()
                 .preferredColorScheme(theme.colorScheme)
                 .environment(\.locale, language.locale)
         }

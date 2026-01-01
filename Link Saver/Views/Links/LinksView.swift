@@ -7,9 +7,11 @@
 
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct LinksView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.openURL) private var openURL
     @Query(sort: \Link.dateAdded, order: .reverse) private var links: [Link]
     @Query private var tags: [Tag]
 
@@ -18,6 +20,8 @@ struct LinksView: View {
     @State private var selectedTagFilter: Tag?
     @State private var sortOption: LinkSortOption = .dateAddedNewest
     @State private var showSortMenu = false
+    @State private var linkToEdit: Link?
+    @State private var linkPendingDelete: Link?
 
     var filteredLinks: [Link] {
         var result = links
@@ -89,6 +93,28 @@ struct LinksView: View {
                 }
             }
         }
+        .sheet(item: $linkToEdit) { link in
+            EditLinkView(link: link)
+        }
+        .alert("linkDetail.delete.title", isPresented: Binding(
+            get: { linkPendingDelete != nil },
+            set: { isPresented in
+                if !isPresented {
+                    linkPendingDelete = nil
+                }
+            }
+        )) {
+            Button("common.cancel", role: .cancel) {
+                linkPendingDelete = nil
+            }
+            Button("common.delete", role: .destructive) {
+                guard let linkPendingDelete else { return }
+                deleteLink(linkPendingDelete)
+                self.linkPendingDelete = nil
+            }
+        } message: {
+            Text("linkDetail.delete.message")
+        }
     }
 
     @ViewBuilder
@@ -143,9 +169,12 @@ struct LinksView: View {
                 NavigationLink(destination: LinkDetailView(link: link)) {
                     LinkRowView(link: link)
                 }
+                .contextMenu {
+                    linkContextMenu(for: link)
+                }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
-                        deleteLink(link)
+                        linkPendingDelete = link
                     } label: {
                         Label("common.delete", systemImage: "trash")
                     }
@@ -198,11 +227,69 @@ struct LinksView: View {
         }
     }
 
+    @ViewBuilder
+    private func linkContextMenu(for link: Link) -> some View {
+        Button {
+            openLink(link)
+        } label: {
+            Label("common.open", systemImage: "safari")
+        }
+
+        Button {
+            copyLink(link)
+        } label: {
+            Label("common.copy", systemImage: "doc.on.doc")
+        }
+
+        Button {
+            toggleFavorite(link)
+        } label: {
+            let titleKey: LocalizedStringKey = link.isFavorite ? "common.unfavorite" : "common.favorite"
+            Label(
+                titleKey,
+                systemImage: link.isFavorite ? "star.slash" : "star"
+            )
+        }
+
+        Button {
+            togglePinned(link)
+        } label: {
+            let titleKey: LocalizedStringKey = link.isPinned ? "common.unpin" : "common.pin"
+            Label(
+                titleKey,
+                systemImage: link.isPinned ? "pin.slash" : "pin.fill"
+            )
+        }
+
+        Button {
+            linkToEdit = link
+        } label: {
+            Label("common.edit", systemImage: "pencil")
+        }
+
+        Divider()
+
+        Button(role: .destructive) {
+            linkPendingDelete = link
+        } label: {
+            Label("common.delete", systemImage: "trash")
+        }
+    }
+
     // MARK: - Actions
     private func deleteLink(_ link: Link) {
         withAnimation {
             modelContext.delete(link)
         }
+    }
+
+    private func openLink(_ link: Link) {
+        guard let url = link.url.normalizedURL else { return }
+        openURL(url)
+    }
+
+    private func copyLink(_ link: Link) {
+        UIPasteboard.general.string = link.url
     }
 
     private func toggleFavorite(_ link: Link) {

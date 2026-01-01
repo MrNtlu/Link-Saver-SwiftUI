@@ -13,6 +13,9 @@ struct SettingsView: View {
     @Query private var folders: [Folder]
     @Query private var tags: [Tag]
 
+    @AppStorage(OnboardingPreferences.key, store: OnboardingPreferences.store)
+    private var hasCompletedOnboarding: Bool = false
+
     @AppStorage(ThemePreferences.key, store: ThemePreferences.store)
     private var themeRawValue: String = ThemePreferences.defaultTheme.rawValue
     @AppStorage(LanguagePreferences.key, store: LanguagePreferences.store)
@@ -51,6 +54,18 @@ struct SettingsView: View {
                         }
                     }
                     .pickerStyle(.navigationLink)
+
+                    Button {
+                        hasCompletedOnboarding = false
+                    } label: {
+                        HStack {
+                            Text("settings.showOnboarding")
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
                 }
 
                 // Tags Section

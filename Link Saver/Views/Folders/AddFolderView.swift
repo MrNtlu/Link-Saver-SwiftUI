@@ -11,6 +11,7 @@ import SwiftData
 struct AddFolderView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Query(sort: \Folder.sortOrder) private var folders: [Folder]
 
     @State private var name = ""
     @State private var selectedIcon = "folder"
@@ -85,6 +86,7 @@ struct AddFolderView: View {
 
     private func createFolder() {
         let folder = Folder(name: name, iconName: selectedIcon)
+        folder.sortOrder = (folders.map(\.sortOrder).max() ?? -1) + 1
         modelContext.insert(folder)
         dismiss()
     }

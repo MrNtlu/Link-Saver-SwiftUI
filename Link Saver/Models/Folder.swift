@@ -14,6 +14,7 @@ final class Folder {
     var name: String
     var iconName: String
     var dateCreated: Date
+    var sortOrder: Int
 
     @Relationship(deleteRule: .nullify, inverse: \Link.folder)
     var links: [Link]?
@@ -29,6 +30,7 @@ final class Folder {
         self.name = name
         self.iconName = iconName
         self.dateCreated = Date()
+        self.sortOrder = 0
     }
 }
 

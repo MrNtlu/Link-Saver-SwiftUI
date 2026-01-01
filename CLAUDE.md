@@ -91,6 +91,42 @@ if #available(iOS 26, *) {
 - **Settings UI**: `Link Saver/Views/Settings/SettingsView.swift` → `Appearance` section with a Light/Dark segmented picker
 - **Style rule**: Prefer semantic colors/materials (`.primary`, `.secondary`, system backgrounds) and avoid hard-coded `.white/.black` so both themes stay correct
 
+### Localization & Translation
+- **Source of truth**: `Link Saver/Localization/Localizable.xcstrings` (String Catalog).
+- **No hard-coded UI text**: All user-facing strings must use `LocalizedStringKey` (SwiftUI `Text("key")`, `Button("key")`) or `String(localized:)` for non-SwiftUI contexts.
+- **Supported languages**: Must include translations for every language in `Link Saver/App/AppLanguage.swift` (`de`, `en`, `es-ES`, `es-419`, `fr`, `ja`, `ko`, `pt-BR`, `tr`, `zh-Hans`, `zh-Hant`).
+- **Key naming**: Use stable, descriptive dot-separated keys (e.g. `onboarding.page.share.title`), never embed English in keys.
+- **Editing rules**:
+  - When adding a key, add all localizations in the same change (do not land partial translations).
+  - Prefer reusing existing phrasing and terminology across features (e.g. “Links”, “Folders”, “Tags”, “Share”).
+  - Keep strings short and UI-friendly; avoid trailing punctuation unless it’s part of the sentence.
+- **Behavior**:
+  - App language is controlled via `@AppStorage(LanguagePreferences.key, store: LanguagePreferences.store)` and applied globally in `Link Saver/App/Link_SaverApp.swift`.
+  - Onboarding should respect the selected language immediately (apply `.environment(\\.locale, ...)` inside onboarding if needed).
+- **Verification**: Before merging, ensure every key has every supported localization. Quick check:
+```bash
+python3 - <<'PY'
+import json
+from pathlib import Path
+
+data = json.loads(Path("Link Saver/Localization/Localizable.xcstrings").read_text())
+langs = ["de", "en", "es-ES", "es-419", "fr", "ja", "ko", "pt-BR", "tr", "zh-Hans", "zh-Hant"]
+missing = []
+
+for key, entry in data.get("strings", {}).items():
+    locs = entry.get("localizations")
+    if not locs or "en" not in locs:
+        continue
+    miss = [lang for lang in langs if lang not in locs]
+    if miss:
+        missing.append((key, miss))
+
+print("missing:", len(missing))
+for key, miss in missing[:25]:
+    print(key, miss)
+PY
+```
+
 ### Error Handling
 - Use `Result` type or `throws` for error propagation
 - Never crash on recoverable errors

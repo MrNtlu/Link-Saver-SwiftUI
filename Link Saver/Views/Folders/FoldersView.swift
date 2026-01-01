@@ -10,27 +10,67 @@ import SwiftData
 
 struct FoldersView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Folder.dateCreated, order: .reverse) private var folders: [Folder]
+    @Query(
+        sort: [
+            SortDescriptor(\Folder.sortOrder, order: .forward),
+            SortDescriptor(\Folder.dateCreated, order: .reverse)
+        ]
+    ) private var folders: [Folder]
     @Query(filter: #Predicate<Link> { $0.isFavorite }) private var favoriteLinks: [Link]
 
     @State private var showAddFolder = false
+    @State private var folderToEdit: Folder?
+    @State private var folderPendingDelete: Folder?
+    @State private var showReorderFolders = false
 
     var body: some View {
         NavigationStack {
             foldersContent
-            .navigationTitle(Text("tab.folders"))
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showAddFolder = true
-                    } label: {
-                        Image(systemName: "folder.badge.plus")
+                .navigationTitle(Text("tab.folders"))
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            showReorderFolders = true
+                        } label: {
+                            Label("folders.reorder.button", systemImage: "arrow.up.arrow.down")
+                        }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showAddFolder = true
+                        } label: {
+                            Image(systemName: "folder.badge.plus")
+                        }
                     }
                 }
-            }
-            .sheet(isPresented: $showAddFolder) {
-                AddFolderView()
-            }
+                .sheet(isPresented: $showAddFolder) {
+                    AddFolderView()
+                }
+                .sheet(item: $folderToEdit) { folder in
+                    EditFolderView(folder: folder)
+                }
+                .navigationDestination(isPresented: $showReorderFolders) {
+                    FolderReorderView(folders: folders)
+                }
+                .alert("folderDetail.delete.title", isPresented: Binding(
+                    get: { folderPendingDelete != nil },
+                    set: { isPresented in
+                        if !isPresented {
+                            folderPendingDelete = nil
+                        }
+                    }
+                )) {
+                    Button("common.cancel", role: .cancel) {
+                        folderPendingDelete = nil
+                    }
+                    Button("common.delete", role: .destructive) {
+                        guard let folderPendingDelete else { return }
+                        deleteFolder(folderPendingDelete)
+                        self.folderPendingDelete = nil
+                    }
+                } message: {
+                    Text("folderDetail.delete.message")
+                }
         }
     }
 
@@ -49,13 +89,13 @@ struct FoldersView: View {
                         .buttonStyle(.plain)
                         .contextMenu {
                             Button {
-                                // Edit action would go here
+                                folderToEdit = folder
                             } label: {
                                 Label("common.edit", systemImage: "pencil")
                             }
 
                             Button(role: .destructive) {
-                                deleteFolder(folder)
+                                folderPendingDelete = folder
                             } label: {
                                 Label("common.delete", systemImage: "trash")
                             }

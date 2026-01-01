@@ -7,16 +7,20 @@
 
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct FolderDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
 
     @Bindable var folder: Folder
 
     @State private var showEditSheet = false
     @State private var showDeleteAlert = false
     @State private var searchText = ""
+    @State private var linkToEdit: Link?
+    @State private var linkPendingDelete: Link?
 
     var filteredLinks: [Link] {
         let links = folder.links ?? []
@@ -73,6 +77,28 @@ struct FolderDetailView: View {
         .sheet(isPresented: $showEditSheet) {
             EditFolderView(folder: folder)
         }
+        .sheet(item: $linkToEdit) { link in
+            EditLinkView(link: link)
+        }
+        .alert("linkDetail.delete.title", isPresented: Binding(
+            get: { linkPendingDelete != nil },
+            set: { isPresented in
+                if !isPresented {
+                    linkPendingDelete = nil
+                }
+            }
+        )) {
+            Button("common.cancel", role: .cancel) {
+                linkPendingDelete = nil
+            }
+            Button("common.delete", role: .destructive) {
+                guard let linkPendingDelete else { return }
+                deleteLink(linkPendingDelete)
+                self.linkPendingDelete = nil
+            }
+        } message: {
+            Text("linkDetail.delete.message")
+        }
         .alert("folderDetail.delete.title", isPresented: $showDeleteAlert) {
             Button("common.cancel", role: .cancel) { }
             Button("common.delete", role: .destructive) {
@@ -99,6 +125,9 @@ struct FolderDetailView: View {
                 NavigationLink(destination: LinkDetailView(link: link)) {
                     LinkRowView(link: link)
                 }
+                .contextMenu {
+                    linkContextMenu(for: link)
+                }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
                         removeFromFolder(link)
@@ -111,9 +140,85 @@ struct FolderDetailView: View {
         .listStyle(.plain)
     }
 
+    @ViewBuilder
+    private func linkContextMenu(for link: Link) -> some View {
+        Button {
+            openLink(link)
+        } label: {
+            Label("common.open", systemImage: "safari")
+        }
+
+        Button {
+            copyLink(link)
+        } label: {
+            Label("common.copy", systemImage: "doc.on.doc")
+        }
+
+        Button {
+            toggleFavorite(link)
+        } label: {
+            let titleKey: LocalizedStringKey = link.isFavorite ? "common.unfavorite" : "common.favorite"
+            Label(
+                titleKey,
+                systemImage: link.isFavorite ? "star.slash" : "star"
+            )
+        }
+
+        Button {
+            togglePinned(link)
+        } label: {
+            let titleKey: LocalizedStringKey = link.isPinned ? "common.unpin" : "common.pin"
+            Label(
+                titleKey,
+                systemImage: link.isPinned ? "pin.slash" : "pin.fill"
+            )
+        }
+
+        Button {
+            linkToEdit = link
+        } label: {
+            Label("common.edit", systemImage: "pencil")
+        }
+
+        Divider()
+
+        Button(role: .destructive) {
+            linkPendingDelete = link
+        } label: {
+            Label("common.delete", systemImage: "trash")
+        }
+    }
+
     private func removeFromFolder(_ link: Link) {
         withAnimation {
             link.folder = nil
+        }
+    }
+
+    private func openLink(_ link: Link) {
+        guard let url = link.url.normalizedURL else { return }
+        openURL(url)
+    }
+
+    private func copyLink(_ link: Link) {
+        UIPasteboard.general.string = link.url
+    }
+
+    private func toggleFavorite(_ link: Link) {
+        withAnimation {
+            link.isFavorite.toggle()
+        }
+    }
+
+    private func togglePinned(_ link: Link) {
+        withAnimation {
+            link.isPinned.toggle()
+        }
+    }
+
+    private func deleteLink(_ link: Link) {
+        withAnimation {
+            modelContext.delete(link)
         }
     }
 

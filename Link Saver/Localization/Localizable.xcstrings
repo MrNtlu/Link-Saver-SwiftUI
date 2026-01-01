@@ -3997,6 +3997,36 @@
         }
       }
     },
+    "folders.reorder.button" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Reihenfolge" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reorder" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Reordenar" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Reordenar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réorganiser" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "並べ替え" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "순서 변경" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Reordenar" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sırala" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "排序" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "排序" } }
+      }
+    },
+    "folders.reorder.title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ordnerreihenfolge" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reorder Folders" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Reordenar carpetas" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Reordenar carpetas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réorganiser les dossiers" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "フォルダを並べ替え" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "폴더 순서 변경" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Reordenar pastas" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Klasörleri sırala" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "重新排序文件夹" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "重新排序資料夾" } }
+      }
+    },
     "folders.linkCount.one %lld" : {
       "localizations" : {
         "de" : {
@@ -8905,6 +8935,426 @@
             "value" : "淺色"
           }
         }
+      }
+    },
+    "onboarding.button.back" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zurück" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Back" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Atrás" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Atrás" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Retour" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "戻る" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "뒤로" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Voltar" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geri" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "返回" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "返回" } }
+      }
+    },
+    "onboarding.button.continue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Weiter" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Continuar" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Continuar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Continuer" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "続ける" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "계속" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Continuar" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Devam" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "继续" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "繼續" } }
+      }
+    },
+    "onboarding.button.getStarted" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Los geht’s" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Get started" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Comenzar" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Empezar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "C’est parti" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "始める" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "시작" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Começar" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Başla" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "开始" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "開始" } }
+      }
+    },
+    "onboarding.button.next" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Weiter" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Next" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Siguiente" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Siguiente" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Suivant" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "次へ" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "다음" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Próximo" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "İleri" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "下一步" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "下一步" } }
+      }
+    },
+    "onboarding.button.skip" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Überspringen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Skip" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Omitir" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Omitir" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ignorer" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "スキップ" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "건너뛰기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Pular" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Atla" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "跳过" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "跳過" } }
+      }
+    },
+    "onboarding.page.find.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Suche nach Titel oder URL und markiere Favoriten für den Schnellzugriff." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Search by title or URL, and mark favorites for quick access." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Busca por título o URL y marca favoritos para un acceso rápido." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Busca por título o URL y marca favoritos para un acceso rápido." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Recherchez par titre ou URL, et marquez vos favoris pour un accès rapide." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "タイトルやURLで検索し、よく使うものはお気に入りに。"} },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "제목이나 URL로 검색하고, 즐겨찾기로 빠르게 접근하세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Pesquise por título ou URL e marque favoritos para acesso rápido." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Başlığa veya URL'ye göre arayın; hızlı erişim için favorilere ekleyin." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "按标题或 URL 搜索，并将常用内容设为收藏以便快速访问。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "以標題或 URL 搜尋，並將常用內容加入收藏以便快速存取。" } }
+      }
+    },
+    "onboarding.page.find.bullet1" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Suche nach Titel oder URL." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Search by title or URL." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Busca por título o URL." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Busca por título o URL." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Recherchez par titre ou URL." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "タイトルやURLで検索。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "제목 또는 URL로 검색하세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Pesquise por título ou URL." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Başlığa veya URL'ye göre arayın." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "按标题或 URL 搜索。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "以標題或 URL 搜尋。" } }
+      }
+    },
+    "onboarding.page.find.bullet2" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Favoriten für den Schnellzugriff markieren." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Favorite links for quick access." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Marca enlaces como favoritos para acceso rápido." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Marca enlaces como favoritos para acceso rápido." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajoutez des favoris pour un accès rapide." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "お気に入りで素早くアクセス。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "즐겨찾기로 빠르게 접근하세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Favorite links para acesso rápido." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hızlı erişim için favorilere alın." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "将链接设为收藏以便快速访问。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "將連結加入收藏以便快速存取。" } }
+      }
+    },
+    "onboarding.page.find.title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Alles schnell finden" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Find anything fast" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Encuentra cualquier cosa rápido" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Encuentra cualquier cosa rápido" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Trouvez tout rapidement" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "すばやく検索" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "빠르게 찾기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Encontre tudo rápido" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hızlıca bulun" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "快速查找" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "快速搜尋" } }
+      }
+    },
+    "onboarding.page.folders.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gruppiere Links in Ordnern für Projekte, Themen oder Leselisten." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Group links into folders for projects, topics, or reading lists." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Agrupa enlaces en carpetas para proyectos, temas o listas de lectura." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Agrupa enlaces en carpetas para proyectos, temas o listas de lectura." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Regroupez les liens dans des dossiers pour vos projets, sujets ou listes de lecture." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "プロジェクトやトピック、読書リストごとにフォルダでまとめられます。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "프로젝트, 주제, 읽기 목록별로 폴더에 링크를 모아보세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Agrupe links em pastas para projetos, temas ou listas de leitura." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bağlantıları proje, konu veya okuma listeleri için klasörlerde gruplayın." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "按项目、主题或阅读清单把链接归入文件夹。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "依專案、主題或閱讀清單將連結歸入資料夾。" } }
+      }
+    },
+    "onboarding.page.folders.bullet1" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erstelle Ordner für Projekte oder Themen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Create folders for projects or topics." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Crea carpetas para proyectos o temas." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Crea carpetas para proyectos o temas." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Créez des dossiers pour vos projets ou sujets." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "プロジェクトやトピック用にフォルダを作成。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "프로젝트/주제별 폴더를 만드세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Crie pastas para projetos ou temas." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Proje veya konular için klasörler oluşturun." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "为项目或主题创建文件夹。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "為專案或主題建立資料夾。" } }
+      }
+    },
+    "onboarding.page.folders.bullet2" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verschiebe Links in Ordner für Ordnung." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Move links into folders to stay organized." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Mueve enlaces a carpetas para mantener el orden." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Mueve enlaces a carpetas para mantener el orden." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Déplacez les liens dans des dossiers pour rester organisé." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "リンクをフォルダに移動して整理。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "링크를 폴더로 옮겨 정리하세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Mova links para pastas para se organizar." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Düzen için bağlantıları klasörlere taşıyın." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "将链接移动到文件夹中保持井井有条。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "將連結移到資料夾中保持有條理。" } }
+      }
+    },
+    "onboarding.page.folders.title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Mit Ordnern organisieren" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Organize with folders" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Organiza con carpetas" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Organiza con carpetas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Organisez avec des dossiers" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "フォルダで整理" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "폴더로 정리" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Organize com pastas" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Klasörlerle düzenleyin" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "用文件夹整理" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "用資料夾整理" } }
+      }
+    },
+    "onboarding.page.preferences.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wähle ein Design und eine Sprache, um loszulegen. Du kannst das später in den Einstellungen ändern." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pick a theme and language to get started. You can change these later in Settings." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Elige un tema y un idioma para empezar. Puedes cambiarlo más tarde en Ajustes." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Elige un tema y un idioma para empezar. Puedes cambiarlo más tarde en Ajustes." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisissez un thème et une langue pour commencer. Vous pourrez les modifier plus tard dans Réglages." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "テーマと言語を選んで始めましょう。後で設定から変更できます。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "시작하기 전에 테마와 언어를 선택하세요. 나중에 설정에서 변경할 수 있어요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Escolha um tema e um idioma para começar. Você pode alterar depois em Ajustes." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Başlamak için tema ve dili seçin. Bunları daha sonra Ayarlar'dan değiştirebilirsiniz." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "先选择主题和语言。之后可在“设置”中更改。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "先選擇主題與語言。之後可在「設定」中更改。" } }
+      }
+    },
+    "onboarding.page.preferences.title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wähle deine Einstellungen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Choose your preferences" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Elige tus preferencias" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Elige tus preferencias" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisissez vos préférences" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "設定を選択" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "기본 설정 선택" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Escolha suas preferências" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tercihlerinizi seçin" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "选择偏好设置" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "選擇偏好設定" } }
+      }
+    },
+    "onboarding.page.share.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutze Teilen → Save to Link Saver oder füge Links manuell hinzu. Alles bleibt auf deinem Gerät – kein Konto, kein Tracking." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Use Share → Save to Link Saver, or add links manually. Everything stays on your device—no account, no tracking." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Usa Compartir → Save to Link Saver, o agrega enlaces manualmente. Todo queda en tu dispositivo: sin cuenta, sin seguimiento." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Usa Compartir → Save to Link Saver, o añade enlaces manualmente. Todo se guarda en tu dispositivo: sin cuenta, sin seguimiento." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Utilisez Partager → Save to Link Saver, ou ajoutez des liens manuellement. Tout reste sur votre appareil : pas de compte, pas de suivi." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "共有 → Save to Link Saver で保存、または手動で追加できます。すべて端末内に保存され、アカウント不要・追跡なし。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "공유 → Save to Link Saver로 저장하거나, 직접 링크를 추가할 수 있어요. 모든 데이터는 기기 안에만 저장되며 계정/추적이 없어요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Use Compartilhar → Save to Link Saver ou adicione links manualmente. Tudo fica no seu aparelho — sem conta e sem rastreamento." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Paylaş → Save to Link Saver ile kaydedin veya bağlantıları manuel ekleyin. Her şey cihazınızda kalır—hesap yok, takip yok." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "通过“分享”→“Save to Link Saver”保存，或手动添加链接。所有内容仅保存在本机——无需账号、不做追踪。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "透過「分享」→「Save to Link Saver」保存，或手動新增連結。所有內容僅保存在本機——不需帳號、不做追蹤。" } }
+      }
+    },
+    "onboarding.page.share.bullet1" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "In jeder App auf „Teilen“ tippen und speichern." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Click Share from any app and save!" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Toca Compartir desde cualquier app y guarda." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Toca Compartir desde cualquier app y guarda." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Touchez Partager dans n’importe quelle app et enregistrez." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "どのアプリでも共有をタップして保存。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "어떤 앱에서든 공유를 눌러 저장하세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Toque em Compartilhar em qualquer app e salve." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Herhangi bir uygulamada Paylaş'a dokunup kaydedin!" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "在任意 App 点按“分享”并保存。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "在任何 App 點按「分享」並儲存。" } }
+      }
+    },
+    "onboarding.page.share.bullet2" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Links jederzeit manuell hinzufügen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add links manually anytime." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Agrega enlaces manualmente cuando quieras." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Añade enlaces manualmente cuando quieras." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajoutez des liens manuellement à tout moment." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "いつでも手動でリンクを追加。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "언제든지 수동으로 링크를 추가하세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Adicione links manualmente a qualquer momento." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bağlantıları istediğiniz zaman manuel ekleyin." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "随时手动添加链接。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "隨時手動新增連結。" } }
+      }
+    },
+    "onboarding.page.share.bullet3" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Alles bleibt offline auf deinem Gerät." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Everything stays offline on your device." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Todo queda sin conexión en tu dispositivo." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Todo se queda sin conexión en tu dispositivo." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tout reste hors ligne sur votre appareil." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "すべて端末内にオフラインで保存。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "모든 내용은 기기 안에 오프라인으로 저장됩니다." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Tudo fica offline no seu aparelho." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Her şey cihazınızda çevrimdışı kalır." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "所有内容都离线保存在本机。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "所有內容都離線保存在本機。" } }
+      }
+    },
+    "onboarding.page.share.title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Links von überall speichern" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Save links from anywhere" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Guarda enlaces desde cualquier lugar" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Guarda enlaces desde cualquier lugar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Enregistrez des liens depuis n’importe où" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "どこからでもリンクを保存" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "어디서나 링크 저장" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Salve links de qualquer lugar" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Her yerden bağlantı kaydedin" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "随时保存链接" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "隨時保存連結" } }
+      }
+    },
+    "onboarding.page.tags.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Füge Tags hinzu und filtere oder gruppiere nach Tag, um alles schnell zu finden." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add tags, then filter or group by tag to find things fast." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Agrega etiquetas y luego filtra o agrupa por etiqueta para encontrar todo rápido." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Añade etiquetas y luego filtra o agrupa por etiqueta para encontrarlo todo rápido." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajoutez des étiquettes, puis filtrez ou regroupez par étiquette pour retrouver rapidement ce que vous cherchez." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "タグを追加して、タグで絞り込み／グループ化できます。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "태그를 추가한 뒤 태그로 필터하거나 그룹화해 빠르게 찾을 수 있어요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Adicione tags e depois filtre ou agrupe por tag para encontrar tudo rapidamente." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Etiket ekleyin; sonra etikete göre filtreleyin veya gruplayın." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "添加标签，然后按标签筛选或分组，快速找到内容。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "新增標籤後，可依標籤篩選或分組，快速找到內容。" } }
+      }
+    },
+    "onboarding.page.tags.bullet1" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Füge jedem Link Tags hinzu." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Add tags to any link." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Agrega etiquetas a cualquier enlace." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Añade etiquetas a cualquier enlace." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajoutez des étiquettes à n’importe quel lien." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "どのリンクにもタグを追加。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "어떤 링크든 태그를 추가하세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Adicione tags a qualquer link." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Her bağlantıya etiket ekleyin." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "为任意链接添加标签。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "為任何連結新增標籤。" } }
+      }
+    },
+    "onboarding.page.tags.bullet2" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nach Tag filtern oder gruppieren." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Filter or group by tag." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Filtra o agrupa por etiqueta." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Filtra o agrupa por etiqueta." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Filtrez ou regroupez par étiquette." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "タグで絞り込み／グループ化。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "태그로 필터하거나 그룹화하세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Filtre ou agrupe por tag." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Etikete göre filtreleyin veya gruplayın." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "按标签筛选或分组。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "依標籤篩選或分組。" } }
+      }
+    },
+    "onboarding.page.tags.title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Taggen und gruppieren" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tag and group" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Etiqueta y agrupa" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Etiqueta y agrupa" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Étiquetez et regroupez" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "タグで分類" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "태그로 분류" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Marque com tags e agrupe" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Etiketleyin ve gruplayın" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "用标签分组" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "用標籤分組" } }
+      }
+    },
+    "onboarding.title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einführung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Onboarding" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Introducción" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Introducción" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Introduction" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "オンボーディング" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "온보딩" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Introdução" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tanıtım" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "引导" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "引導" } }
+      }
+    },
+    "onboarding.welcome.subtitle" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wähle Design und App-Sprache." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Choose your theme and app language." } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Elige el tema y el idioma de la app." } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Elige el tema y el idioma de la app." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisissez le thème et la langue de l’app." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "テーマとアプリの言語を選択してください。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "테마와 앱 언어를 선택하세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Escolha o tema e o idioma do app." } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tema ve uygulama dilini seçin." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "选择主题和应用语言。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "選擇主題與 App 語言。" } }
+      }
+    },
+    "onboarding.welcome.title" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Willkommen bei Link Saver" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Welcome to Link Saver" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Bienvenido a Link Saver" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Bienvenido a Link Saver" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bienvenue dans Link Saver" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Link Saverへようこそ" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "Link Saver에 오신 것을 환영합니다" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Bem-vindo ao Link Saver" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Link Saver'a hoş geldiniz" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "欢迎使用 Link Saver" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "歡迎使用 Link Saver" } }
+      }
+    },
+    "settings.showOnboarding" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Onboarding anzeigen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Show onboarding" } },
+        "es-419" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar introducción" } },
+        "es-ES" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar introducción" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Afficher l’introduction" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "オンボーディングを表示" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "온보딩 보기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Mostrar onboarding" } },
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tanıtımı göster" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "显示引导" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "顯示引導" } }
       }
     }
   },

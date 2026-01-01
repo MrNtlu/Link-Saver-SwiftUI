@@ -442,7 +442,7 @@
 		67B1DE8F2F02601E009F3EF0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = LinkSaver;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Link Saver/Link Saver.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -479,7 +479,7 @@
 		67B1DE902F02601E009F3EF0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = LinkSaver;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Link Saver/Link Saver.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";

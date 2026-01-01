@@ -12,7 +12,12 @@ struct AddLinkView: View {
     @Environment(\.modelContext) private var modelContext
     let onSaved: (() -> Void)?
 
-    @Query private var folders: [Folder]
+    @Query(
+        sort: [
+            SortDescriptor(\Folder.sortOrder, order: .forward),
+            SortDescriptor(\Folder.name, order: .forward)
+        ]
+    ) private var folders: [Folder]
     @Query private var allTags: [Tag]
 
     @State private var urlText = ""
