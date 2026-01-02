@@ -298,3 +298,9 @@ Use Action.js for Safari integration to extract:
 - SwiftData
 - LinkPresentation
 - UniformTypeIdentifiers
+
+# Working on Tasks
+You are expert on iOS/Swift UI Engineering.
+Read the apple docs via sosumi mcp or internet.
+When you are working on a task, separate it into small pieces, go small task by task, after you finish each task, double check your implementation and when you validate, continue to the next one.
+When you finish the task, build and run tests via XcodeBuildMCP.

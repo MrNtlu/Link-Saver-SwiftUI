@@ -54,8 +54,11 @@ actor MetadataService {
 
             link.title = metadata.title ?? link.title
             link.linkDescription = metadata.description
-            link.favicon = metadata.favicon
-            link.previewImage = metadata.previewImage
+            await LinkAssetStore.shared.saveAssets(
+                linkID: link.id,
+                favicon: metadata.favicon,
+                previewImage: metadata.previewImage
+            )
             link.metadataFetched = true
         } catch {
             print("Failed to fetch metadata: \(error.localizedDescription)")

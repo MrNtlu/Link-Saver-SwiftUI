@@ -44,11 +44,13 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				App/AppConstants.swift,
+				App/ICloudSyncPreferences.swift,
 				App/AppLanguage.swift,
 				Models/Folder.swift,
 				Models/Link.swift,
 				Models/ModelContainerFactory.swift,
 				Models/Tag.swift,
+				Services/LinkAssetStore.swift,
 				Services/MetadataService.swift,
 				"Utilities/Extensions/URL+Extensions.swift",
 			);

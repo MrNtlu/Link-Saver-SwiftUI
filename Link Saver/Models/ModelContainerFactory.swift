@@ -18,41 +18,85 @@ enum ModelContainerFactory {
         ])
     }
 
+    enum SyncMode {
+        case local
+        case iCloud
+    }
+
+    enum StoreKind {
+        case local
+        case iCloud
+    }
+
     /// URL for the database stored in this target's Documents directory (legacy, not shared with extensions).
-    static var legacyDocumentsContainerURL: URL {
-        URL.documentsDirectory.appending(path: AppConstants.databaseName)
+    static func legacyDocumentsContainerURL(databaseName: String) -> URL {
+        URL.documentsDirectory.appending(path: databaseName)
     }
 
     /// URL for the shared database container (App Groups), if App Groups are configured correctly.
-    static var appGroupContainerURL: URL? {
+    static func appGroupContainerURL(databaseName: String) -> URL? {
         FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppConstants.appGroupID)?
-            .appending(path: AppConstants.databaseName)
+            .appending(path: databaseName)
     }
 
-    /// URL for the database we should use for this process.
-    static var sharedContainerURL: URL {
-        appGroupContainerURL ?? legacyDocumentsContainerURL
+    static func storeURL(for kind: StoreKind) -> URL {
+        let databaseName: String = {
+            switch kind {
+            case .local: return AppConstants.databaseName
+            case .iCloud: return AppConstants.iCloudDatabaseName
+            }
+        }()
+
+        let legacy = legacyDocumentsContainerURL(databaseName: databaseName)
+        return appGroupContainerURL(databaseName: databaseName) ?? legacy
     }
 
-    /// Creates a ModelContainer for production use with App Groups
-    static func createSharedContainer() -> ModelContainer {
-        if let appGroupURL = appGroupContainerURL {
-            migrateLegacyStoreIfNeeded(from: legacyDocumentsContainerURL, to: appGroupURL)
+    static func cloudKitDatabase(for kind: StoreKind) -> ModelConfiguration.CloudKitDatabase {
+        switch kind {
+        case .local: return .none
+        case .iCloud: return .private(AppConstants.iCloudContainerIdentifier)
+        }
+    }
+
+    /// Creates a ModelContainer for production use (local or iCloud) stored in App Groups.
+    static func createContainer(for mode: SyncMode) -> ModelContainer {
+        let kind: StoreKind = (mode == .iCloud) ? .iCloud : .local
+
+        if let appGroupURL = appGroupContainerURL(databaseName: {
+            switch kind {
+            case .local: return AppConstants.databaseName
+            case .iCloud: return AppConstants.iCloudDatabaseName
+            }
+        }()) {
+            migrateLegacyStoreIfNeeded(
+                from: legacyDocumentsContainerURL(databaseName: {
+                    switch kind {
+                    case .local: return AppConstants.databaseName
+                    case .iCloud: return AppConstants.iCloudDatabaseName
+                    }
+                }()),
+                to: appGroupURL
+            )
         }
 
         let modelConfiguration = ModelConfiguration(
             schema: schema,
-            url: sharedContainerURL,
+            url: storeURL(for: kind),
             allowsSave: true,
-            cloudKitDatabase: .none
+            cloudKitDatabase: cloudKitDatabase(for: kind)
         )
 
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
+            // Prefer a usable app without iCloud over crashing.
+            if kind == .iCloud {
+                print("[LinkSaver] Falling back to local store because iCloud container failed: \(error.localizedDescription)")
+                return createContainer(for: .local)
+            }
             fatalError("Could not create ModelContainer: \(error.localizedDescription)")
         }
-	    }
+    }
 
     private static func migrateLegacyStoreIfNeeded(from legacyURL: URL, to sharedURL: URL) {
         guard legacyURL != sharedURL else { return }

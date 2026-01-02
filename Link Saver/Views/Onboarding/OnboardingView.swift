@@ -194,10 +194,10 @@ struct OnboardingView: View {
                 Image(systemName: "checkmark.circle.fill")
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(.tint)
-                    .font(.system(size: 22, weight: .semibold))
+                    .font(.system(size: 16, weight: .regular))
 
                 Text(bulletKey)
-                    .font(.title3.weight(.medium))
+                    .font(.callout.weight(.medium))
                     .foregroundStyle(.primary)
                     .multilineTextAlignment(.leading)
 
@@ -220,17 +220,18 @@ struct OnboardingView: View {
                 .frame(width: 22)
 
             Text(titleKey)
-                .font(.headline)
+                .font(.subheadline.weight(.semibold))
 
             Spacer(minLength: 12)
 
             value
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
+                .font(.callout)
 
             Image(systemName: "chevron.up.chevron.down")
                 .foregroundStyle(.tertiary)
-                .font(.subheadline.weight(.semibold))
+                .font(.caption.weight(.semibold))
         }
         .padding(16)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
@@ -245,8 +246,16 @@ struct OnboardingView: View {
         VStack(spacing: 20) {
             Spacer(minLength: 0)
             
-            GIFImageView(dataAssetName: "mascot")
-                .frame(width: 125, height: 125)
+            Image("linksaver-icon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 120, height: 120)
+                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .strokeBorder(.secondary.opacity(0.18), lineWidth: 1)
+                )
+                .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 8)
                 .accessibilityHidden(true)
 
             Text("onboarding.welcome.title")

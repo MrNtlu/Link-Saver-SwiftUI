@@ -82,11 +82,11 @@ struct LinkRowView: View {
             }
         }
         .padding(.vertical, 4)
-        .task(id: link.favicon) {
-            faviconImage = await decodeImage(from: link.favicon)
+        .task(id: link.id) {
+            await loadAssets()
         }
-        .task(id: link.previewImage) {
-            previewUIImage = await decodeImage(from: link.previewImage)
+        .task(id: link.lastMetadataFetchAttempt) {
+            await loadAssets()
         }
     }
 
@@ -112,6 +112,14 @@ struct LinkRowView: View {
     private func decodeImage(from data: Data?) async -> UIImage? {
         guard let data else { return nil }
         return await Task.detached(priority: .utility) { UIImage(data: data) }.value
+    }
+
+    private func loadAssets() async {
+        let faviconData = await LinkAssetStore.shared.loadFavicon(linkID: link.id) ?? link.favicon
+        let previewData = await LinkAssetStore.shared.loadPreviewImage(linkID: link.id) ?? link.previewImage
+
+        faviconImage = await decodeImage(from: faviconData)
+        previewUIImage = await decodeImage(from: previewData)
     }
 }
 

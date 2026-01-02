@@ -112,7 +112,7 @@ class ShareViewController: UIViewController {
             }
         )
 
-        let modelContainer = ModelContainerFactory.createSharedContainer()
+        let modelContainer = ModelContainerFactory.createContainer(for: ICloudSyncPreferences.isEnabled ? .iCloud : .local)
         let hostingController = UIHostingController(
             rootView: shareView.modelContainer(modelContainer)
         )

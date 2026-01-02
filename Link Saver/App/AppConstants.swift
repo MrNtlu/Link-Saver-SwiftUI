@@ -15,6 +15,12 @@ enum AppConstants {
     /// Database file name
     static let databaseName = "LinkSaver.sqlite"
 
+    /// Database file name used when iCloud sync is enabled
+    static let iCloudDatabaseName = "LinkSaver-iCloud.sqlite"
+
+    /// CloudKit container identifier used for iCloud sync
+    static let iCloudContainerIdentifier = "iCloud.com.mrntlu.linksaver"
+
     /// Maximum preview image dimension
     static let maxPreviewImageSize: CGFloat = 300
 

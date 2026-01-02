@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct Link_SaverApp: App {
-    var sharedModelContainer: ModelContainer = ModelContainerFactory.createSharedContainer()
+    @StateObject private var persistenceController = PersistenceController()
     @AppStorage(ThemePreferences.key, store: ThemePreferences.store)
     private var themeRawValue: String = ThemePreferences.defaultTheme.rawValue
     @AppStorage(LanguagePreferences.key, store: LanguagePreferences.store)
@@ -27,9 +27,11 @@ struct Link_SaverApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .id(persistenceController.containerID)
                 .preferredColorScheme(theme.colorScheme)
                 .environment(\.locale, language.locale)
+                .environmentObject(persistenceController)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(persistenceController.container)
     }
 }

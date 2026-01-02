@@ -19,6 +19,8 @@ struct LinkDetailView: View {
     @State private var showEditSheet = false
     @State private var showDeleteAlert = false
     @State private var isRefreshingMetadata = false
+    @State private var faviconImage: UIImage?
+    @State private var previewImage: UIImage?
     
     private var hasNotes: Bool {
         !(link.notes?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true)
@@ -56,6 +58,12 @@ struct LinkDetailView: View {
         .navigationTitle("linkDetail.title")
         .navigationBarTitleDisplayMode(.inline)
         .groupBoxStyle(DetailCardGroupBoxStyle())
+        .task(id: link.id) {
+            await loadAssets()
+        }
+        .task(id: link.lastMetadataFetchAttempt) {
+            await loadAssets()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
@@ -114,8 +122,7 @@ struct LinkDetailView: View {
     private var previewCard: some View {
         VStack(alignment: .leading, spacing: 12) {
             // Preview Image
-            if let previewData = link.previewImage,
-               let uiImage = UIImage(data: previewData) {
+            if let uiImage = previewImage {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -125,8 +132,7 @@ struct LinkDetailView: View {
 
             HStack(spacing: 12) {
                 // Favicon
-                if let faviconData = link.favicon,
-                   let uiImage = UIImage(data: faviconData) {
+                if let uiImage = faviconImage {
                     Image(uiImage: uiImage)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -402,6 +408,19 @@ struct LinkDetailView: View {
                 isRefreshingMetadata = false
             }
         }
+    }
+
+    private func loadAssets() async {
+        let faviconData = await LinkAssetStore.shared.loadFavicon(linkID: link.id) ?? link.favicon
+        let previewData = await LinkAssetStore.shared.loadPreviewImage(linkID: link.id) ?? link.previewImage
+
+        faviconImage = await decodeImage(from: faviconData)
+        previewImage = await decodeImage(from: previewData)
+    }
+
+    private func decodeImage(from data: Data?) async -> UIImage? {
+        guard let data else { return nil }
+        return await Task.detached(priority: .utility) { UIImage(data: data) }.value
     }
 
     // MARK: - Notes Section
