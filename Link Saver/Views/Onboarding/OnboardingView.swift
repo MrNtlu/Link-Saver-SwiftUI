@@ -194,10 +194,11 @@ struct OnboardingView: View {
                 Image(systemName: "checkmark.circle.fill")
                     .symbolRenderingMode(.hierarchical)
                     .foregroundStyle(.tint)
-                    .font(.system(size: 16, weight: .regular))
+                    .font(.system(size: 18, weight: .semibold))
 
                 Text(bulletKey)
-                    .font(.callout.weight(.medium))
+                    .font(.callout.weight(.regular))
+                    .font(.system(size: 16))
                     .foregroundStyle(.primary)
                     .multilineTextAlignment(.leading)
 

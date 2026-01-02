@@ -122,16 +122,17 @@ enum ModelContainerFactory {
             print("[LinkSaver] Failed to migrate legacy store to App Group container: \(error.localizedDescription)")
         }
     }
-	
-	    /// Creates a ModelContainer for SwiftUI previews (in-memory)
-	    @MainActor
-	    static func createPreviewContainer() -> ModelContainer {
-	        let modelConfiguration = ModelConfiguration(
-	            schema: schema,
-	            isStoredInMemoryOnly: true,
-	            allowsSave: true,
-	            cloudKitDatabase: .none
-	        )
+
+    
+    /// Creates a ModelContainer for SwiftUI previews (in-memory)
+    @MainActor
+    static func createPreviewContainer() -> ModelContainer {
+        let modelConfiguration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: true,
+            allowsSave: true,
+            cloudKitDatabase: .none
+        )
 
         do {
             let container = try ModelContainer(for: schema, configurations: [modelConfiguration])

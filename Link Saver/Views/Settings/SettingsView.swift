@@ -27,6 +27,7 @@ struct SettingsView: View {
     @State private var isExportingBackup = false
     @State private var backupDocument: BackupDocument?
     @State private var isImportingBackup = false
+    @State private var isReloadingMetadata = false
     @State private var settingsAlert: SettingsAlert?
 
     private enum SettingsAlert: Identifiable {
@@ -85,6 +86,25 @@ struct SettingsView: View {
                     }
                     .pickerStyle(.navigationLink)
 
+                    NavigationLink {
+                        TagManagementView()
+                    } label: {
+                        Text("settings.manageTags")
+                    }
+
+                    Button {
+                        reloadAllMetadata()
+                    } label: {
+                        HStack {
+                            Text("settings.reloadMetadata")
+                            Spacer()
+                            if isReloadingMetadata {
+                                ProgressView()
+                            }
+                        }
+                    }
+                    .disabled(isReloadingMetadata || links.isEmpty)
+
                     Button {
                         hasCompletedOnboarding = false
                     } label: {
@@ -96,15 +116,6 @@ struct SettingsView: View {
                         }
                     }
                     .foregroundStyle(.primary)
-                }
-
-                // Tags Section
-                Section("settings.section.tags") {
-                    NavigationLink {
-                        TagManagementView()
-                    } label: {
-                        Label("settings.manageTags", systemImage: "tag")
-                    }
                 }
 
                 Section("settings.section.icloud") {
@@ -256,6 +267,24 @@ struct SettingsView: View {
                         dismissButton: .cancel(Text("common.ok"))
                     )
                 }
+            }
+        }
+    }
+
+    private func reloadAllMetadata() {
+        guard !isReloadingMetadata else { return }
+
+        let linksToRefresh = links
+        guard !linksToRefresh.isEmpty else { return }
+
+        isReloadingMetadata = true
+
+        Task {
+            for link in linksToRefresh {
+                await MetadataService.shared.fetchAndUpdateMetadata(for: link)
+            }
+            await MainActor.run {
+                isReloadingMetadata = false
             }
         }
     }

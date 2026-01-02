@@ -38,7 +38,7 @@ final class Link {
     }
 
     var domain: String? {
-        URL(string: url)?.host
+        url.extractedDomain ?? URL(string: url)?.cleanHost
     }
 
     // MARK: - Initialization
