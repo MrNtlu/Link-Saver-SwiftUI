@@ -52,7 +52,11 @@ actor MetadataService {
         do {
             let metadata = try await fetchMetadata(for: url)
 
-            link.title = metadata.title ?? link.title
+            let existingTitle = link.title?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            let fetchedTitle = metadata.title?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            if existingTitle.isEmpty, !fetchedTitle.isEmpty {
+                link.title = fetchedTitle
+            }
             link.linkDescription = metadata.description
             await LinkAssetStore.shared.saveAssets(
                 linkID: link.id,

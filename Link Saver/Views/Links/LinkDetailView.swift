@@ -21,6 +21,8 @@ struct LinkDetailView: View {
     @State private var isRefreshingMetadata = false
     @State private var faviconImage: UIImage?
     @State private var previewImage: UIImage?
+    @State private var showCopiedIndicator = false
+    @State private var hideCopiedIndicatorTask: Task<Void, Never>?
     
     private var hasNotes: Bool {
         !(link.notes?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true)
@@ -58,6 +60,13 @@ struct LinkDetailView: View {
         .navigationTitle("linkDetail.title")
         .navigationBarTitleDisplayMode(.inline)
         .groupBoxStyle(DetailCardGroupBoxStyle())
+        .overlay(alignment: .top) {
+            if showCopiedIndicator {
+                copiedIndicatorView
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+        .animation(.spring(response: 0.35, dampingFraction: 0.85), value: showCopiedIndicator)
         .task(id: link.id) {
             await loadAssets()
         }
@@ -116,6 +125,21 @@ struct LinkDetailView: View {
         } message: {
             Text("linkDetail.delete.message")
         }
+        .onDisappear {
+            hideCopiedIndicatorTask?.cancel()
+        }
+    }
+
+    private var copiedIndicatorView: some View {
+        Label("common.copied", systemImage: "checkmark.circle.fill")
+            .font(.footnote.weight(.semibold))
+            .foregroundStyle(.primary)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(.ultraThinMaterial, in: Capsule())
+            .padding(.top, 8)
+            .padding(.horizontal)
+            .accessibilityAddTraits(.isStaticText)
     }
 
     // MARK: - Preview Card
@@ -362,11 +386,13 @@ struct LinkDetailView: View {
     // MARK: - Actions
     private func openLink() {
         guard let url = URL(string: link.url) else { return }
+        Haptics.impact(.light)
         openURL(url)
     }
 
     private func shareLink() {
         guard let url = URL(string: link.url) else { return }
+        Haptics.impact(.light)
         let activityVC = UIActivityViewController(
             activityItems: [url],
             applicationActivities: nil
@@ -381,6 +407,24 @@ struct LinkDetailView: View {
 
     private func copyLink() {
         UIPasteboard.general.string = link.url
+        Haptics.notification(.success)
+        presentCopiedIndicator()
+    }
+
+    private func presentCopiedIndicator() {
+        hideCopiedIndicatorTask?.cancel()
+        withAnimation {
+            showCopiedIndicator = true
+        }
+        hideCopiedIndicatorTask = Task {
+            try? await Task.sleep(nanoseconds: 1_200_000_000)
+            guard !Task.isCancelled else { return }
+            await MainActor.run {
+                withAnimation {
+                    showCopiedIndicator = false
+                }
+            }
+        }
     }
 
     private func toggleFavorite() {

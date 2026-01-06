@@ -283,6 +283,7 @@ struct LinksView: View {
 
     // MARK: - Actions
     private func deleteLink(_ link: Link) {
+        Haptics.notification(.warning)
         withAnimation {
             modelContext.delete(link)
         }
@@ -298,12 +299,14 @@ struct LinksView: View {
     }
 
     private func toggleFavorite(_ link: Link) {
+        Haptics.selectionChanged()
         withAnimation {
             link.isFavorite.toggle()
         }
     }
 
     private func togglePinned(_ link: Link) {
+        Haptics.selectionChanged()
         withAnimation {
             link.isPinned.toggle()
         }
